@@ -29,11 +29,15 @@ class Register extends Component {
 
     app.auth().createUserWithEmailAndPassword(email, password)
         .then((user) => {
-            //regustered
+            //registered
             return user;
         })
         .then((user) => {
             if (user && user.user.email) {
+                app.firestore().collection("/users").doc(user.user.uid).set({
+                    email: user.user.email,
+                    password: password
+                })
                 this.registerForm.reset()
                 this.setState({redirect: true})
             }
@@ -95,7 +99,7 @@ class Register extends Component {
             Password
             <input style={{width: "100%"}} className="pt-input" name="password" type="password" ref={(input) => { this.passwordInput = input }} placeholder="Password"></input>
           </label>
-          <input style={{width: "100%"}} type="submit" className="pt-button pt-intent-primary" value="Log In"></input>
+          <input style={{width: "100%"}} type="submit" className="pt-button pt-intent-primary" value="Register"></input>
 
         </form>
       </div>
