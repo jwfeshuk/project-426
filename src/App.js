@@ -6,12 +6,13 @@ import Header from './components/Header';
 import Login from './components/Login';
 import Register from './components/Register';
 import Logout from './components/Logout';
+import SubmitReview from './components/SubmitReview';
 // import ChordEditor from './components/ChordEditor';
 // import SongList from './components/SongList';
 import { app, base } from './base';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Spinner } from 'react-bootstrap';
+import { Col, Container, Row, Spinner } from 'react-bootstrap';
 
 class App extends Component {
   constructor() {
@@ -90,6 +91,16 @@ class App extends Component {
                 <Route exact path="/login" component={Login} />
                 <Route exact path="/register" component={Register} />
                 <Route exact path="/logout" component={Logout} />
+                <Route exact path="/" render={() => (
+                  <SubmitReview authenticated={this.state.authenticated} />
+                  )}
+                />
+                <Container>
+                  <Row>
+                    <Col></Col>
+                    <Col></Col>
+                  </Row>
+                </Container>
                 {/* <Route exact path="/songs" render={(props) => {
                   return (
                     // <SongList songs={this.state.songs} />
