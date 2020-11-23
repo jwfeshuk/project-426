@@ -5,8 +5,15 @@ import { app } from '../base';
 import blue from "./blue.png"
 import white from "./white.png"
 
-
 class ReviewCard extends Component {
+    constructor(props) {
+        super(props);
+    }
+    
+    getProps() {
+        return this.props
+    }
+
     render() {
         return (
         <Card style={{backgroundColor: "#13294B"}}>
@@ -23,7 +30,7 @@ class ReviewCard extends Component {
                                 src={blue}
                                 style={{marginTop: "5px"}}
                             />
-                            <span className="rating" style={{position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)"}}>{this.props.input.rating}</span>
+                            <span className="rating" style={{position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)"}}>{this.getProps().review.rating}</span>
                         </Figure>
                     </div>
                     
@@ -37,7 +44,7 @@ class ReviewCard extends Component {
                                 src={white}
                                 style={{marginTop: "5px"}}
                             />
-                            <span className="rating" style={{position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)"}}>{this.props.input.difficulty}</span>
+                            <span className="rating" style={{position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)"}}>{this.getProps().review.difficulty}</span>
                         </Figure>
                     </div>
                 </div>

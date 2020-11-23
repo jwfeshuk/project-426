@@ -1,16 +1,13 @@
-import Review from "../Review";
-import Professor from '../Professor.js'
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Card, Button, Form, Col } from 'react-bootstrap';
 import { app } from '../base';
 
 class ExistingSubmitForm extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
-            first: "",
-            last: "",
+            profID: "",
             courseCode: "",
             rating: 0,
             difficulty: 0,
@@ -19,35 +16,83 @@ class ExistingSubmitForm extends Component {
             attendance: null,
             grade: "",
             tags: [],
-            specifics: ""
+            specifics: "",
         }
 
         this.onSubmit = this.onSubmit.bind(this);
     }
 
+    createSelectItems() {
+        let items = this.props.profs.map((prof, i) => <option key={i} value={prof.id}>{prof.display}</option>)
+        return items
+    }
+
     onSubmit(e) {
+        e.preventDefault();
+        if (!!this.state.profID && !!this.state.courseCode && this.state.rating != 0 && this.state.difficulty != 0 
+            && !!this.state.takeAgain && !!this.state.useTextbook && !!this.state.specifics) {
+                let review = {
+                    profID: this.state.profID,
+                    courseCode: this.state.courseCode,
+                    rating: this.state.rating,
+                    difficulty: this.state.difficulty,
+                    takeAgain: this.state.takeAgain,
+                    useTexbook: this.state.useTextbook,
+                    specifics: this.state.specifics
+                }
+                
+                if (!!this.state.attendance) {
+                    review.attendance = this.state.attendance
+                }
+    
+                if (!!review.grade) {
+                    review.grade = this.state.grade
+                }
+        
+                if (!!review.tags) {
+                    review.tags = this.state.tags
+                }
+    
+                let reviewCol = app.firestore().collection("/reviews")
+        
+                let today = new Date()
+                review.lastUpdated = today.getTime()
+                review.lastUpdatedPretty = (today.getMonth() + 1) + '/' + today.getDate() + '/' + today.getFullYear()
+    
+                let reviewDB = reviewCol.add(review).then((reviewRef) => {
+                    review.reviewID = reviewRef.id
+    
+                    reviewCol.doc(reviewRef.id).update({
+                        reviewID: reviewRef.id
+                    })
+                    window.location.href = "/"
+                }).catch((error) => {
+                    console.log(error);
+                })
+        } else {
+            alert("You didn't finish the form! Please go back and finish.")
+        }
     }
 
     render() {
         return (
             <Card style={{ width: "90%", marginLeft: "5%", backgroundColor: "#97c0e6", color: "#13294B"}}>
+                <Card.Title className="text-center" style={{fontSize: "50px", fontFamily: "sans-serif", paddingTop: "15px"}}>Existing Professor Review Form</Card.Title>
                 <Card.Body>
                     <Form>
                         <Form.Row>
                             <Form.Group as={Col} controlId="formProfFirst">
-                                <Form.Label>Professor's First Name</Form.Label>
-                                <Form.Control type="name" placeholder="e.g. Ketan" onChange={e => this.setState({ first: e.target.value })} />
+                                <Form.Label>Professor</Form.Label>
+                                <Form.Control as="select" defaultValue="Choose a Professor" onChange={e => this.setState({ profID: e.target.value })}>
+                                    <option>Choose a Professor</option>
+                                    {this.createSelectItems()}
+                                </Form.Control>
                             </Form.Group>
-
-                            <Form.Group as={Col} controlId="formProfFirst">
-                                <Form.Label>Professor's Last Name</Form.Label>
-                                <Form.Control type="name" placeholder="e.g. Meyer-Patel" onChange={e => this.setState({ last: e.target.value })} />
+                            <Form.Group as={Col} controlId="formCourseCode">
+                                <Form.Label>Course Code</Form.Label>
+                                <Form.Control type="name" placeholder="e.g. COMP 426" onChange={e => this.setState({ courseCode: e.target.value })} />
                             </Form.Group>
                         </Form.Row>
-                        <Form.Group controlId="formCourseCode">
-                            <Form.Label>Course Code</Form.Label>
-                            <Form.Control type="name" placeholder="e.g. COMP 426" onChange={e => this.setState({ courseCode: e.target.value })} />
-                        </Form.Group>
                         <Form.Row>
                             <Form.Group as={Col}>
                                 <Form.Label>How would you rate this Professor?</Form.Label>
@@ -155,8 +200,8 @@ class ExistingSubmitForm extends Component {
                                 </Form.Group>
                             </Form.Group>
                         </Form.Row>
-                        <Form.Label>Here's your chance to be more specific</Form.Label>
-                        <Form.Control style={{marginBottom: "8px"}} as="textarea" onChange={e => this.setState({ specifics: e.target.value })} />
+                        <Form.Label>Here's your chance to be more specific <em>(Limit 350 Characters)</em></Form.Label>
+                        <Form.Control maxLength="350" style={{marginBottom: "8px", height: "150px"}} as="textarea" onChange={e => this.setState({ specifics: e.target.value })} />
                         <Button style={{marginRight: "5px", backgroundColor: "#13294B", borderColor: "#13294B"}} onClick={this.onSubmit} type="submit">Submit</Button>
                         <Button style={{backgroundColor: "#13294B", borderColor: "#13294B"}} href="/">Cancel</Button>
                     </Form>

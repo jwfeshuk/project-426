@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Card, Button } from 'react-bootstrap';
+import { app } from '../base';
 
 class SubmitReview extends Component {
     constructor() {
@@ -21,8 +22,9 @@ class SubmitReview extends Component {
             marginRight: "5px",
             backgroundColor: "#13294B"
         }
+
         return (
-            <Card className="text-center" style={{backgroundColor: "#97c0e6"}}>
+            <Card className="text-center" style={{backgroundColor: "#97c0e6", marginBottom: "8px"}}>
                 <Card.Body>
                     <Card.Title style={{fontSize: '40px', color: "#ffffff"}}>Find the Best (Or Worst) Professors On Campus</Card.Title>
                     <Card.Subtitle style={{fontSize: '25px', color: "#ffffff"}}>Or Give Your Own Opinion</Card.Subtitle>
@@ -38,4 +40,5 @@ class SubmitReview extends Component {
         )
     }
 }
+
 export default SubmitReview;

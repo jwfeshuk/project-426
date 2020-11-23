@@ -5,24 +5,34 @@ import { app } from '../base';
 import ReviewCard from './ReviewCard'
 
 class RecentReviews extends Component {
-    render() {
-        let reviewsArray = []
-        
-        app.firestore().collection("/reviews").orderBy('lastUpdated').limit(3).get().then((reviews) => {
-            reviews.forEach((review) => {
-                reviewsArray.push(review)
-            })
-        }).catch((error) => {
-            console.log(error)
-        })
+    constructor() {
+        super();
+        this.state = {
+            recents: []
+        }
 
+        app.firestore().collection("/reviews").orderBy('lastUpdated').limit(3).get()
+            .then((reviews) => {
+                let temp = []
+                reviews.forEach((review) => {
+                    let recent = review.data()
+                    temp.push(recent)
+                })
+                this.setState({recents: temp})
+            }).catch((error) => {
+                console.log(error)
+            })
+    }
+    
+    render() {
+        console.log(this.state)
         return(
             <Card>
                 <Card.Header className="text-center" style={{backgroundColor: "#13294B", color: "#ffffff"}}>Recent Reviews</Card.Header>
                 <ListGroup variant="flush">
-                    <ListGroup.Item style={{backgroundColor: "#97c0e6"}}><ReviewCard input="1"/></ListGroup.Item>
-                    <ListGroup.Item style={{backgroundColor: "#97c0e6"}}><ReviewCard input="2"/></ListGroup.Item>
-                    <ListGroup.Item style={{backgroundColor: "#97c0e6"}}><ReviewCard input="3"/></ListGroup.Item>
+                    <ListGroup.Item style={{backgroundColor: "#97c0e6"}}><ReviewCard review={this.state.recents[0]}/></ListGroup.Item>
+                    <ListGroup.Item style={{backgroundColor: "#97c0e6"}}><ReviewCard review={this.state.recents[1]}/></ListGroup.Item>
+                    <ListGroup.Item style={{backgroundColor: "#97c0e6"}}><ReviewCard review={this.state.recents[2]}/></ListGroup.Item>
                 </ListGroup>
             </Card>
         )

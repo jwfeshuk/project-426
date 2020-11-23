@@ -22,32 +22,27 @@ import { Col, Container, Row, Spinner } from 'react-bootstrap';
 class App extends Component {
   constructor() {
     super();
-    this.addSong = this.addSong.bind(this);
-    this.updateSong = this.updateSong.bind(this);
     this.state = {
-      songs: { },
       authenticated: false,
-      loading: true
-    };
-  }
-
-  addSong(title) {
-    const songs = {...this.state.songs};
-    const id = Date.now();
-    songs[id] = {
-      id: id,
-      title: title,
-      chordpro: ""
+      loading: true,
+      options: []
     };
 
-    this.setState({songs});
-  }
-
-  updateSong(song) {
-    const songs = {...this.state.songs};
-    songs[song.id] = song;
-
-    this.setState({songs});
+    app.firestore().collection("/professors").get()
+      .then((profs) => {
+        let temp = [];
+        profs.forEach((prof) => {
+          let professor = prof.data()
+          temp.push({
+            id: professor.profID,
+            display: professor.first + " " + professor.last
+          })
+        })
+        this.setState({options: temp})
+      })
+      .catch((error) => {
+        console.log(error);
+    })
   }
 
   componentWillMount() {
@@ -64,16 +59,10 @@ class App extends Component {
         })
       }
     })
-
-    this.songsRef = base.syncState('songs', {
-      context: this,
-      state: 'songs'
-    });
   }
 
   componentWillUnmount() {
     this.removeAuthListener();
-    base.removeBinding(this.songsRef);
   }
 
   render() {
@@ -81,29 +70,34 @@ class App extends Component {
       return (
         <div style={{ textAlign: "center", position: "absolute", top: "25%", left: "50%" }}>
           <h3>Loading</h3>
-          <Spinner animation="border" role="status"/>
+          <Spinner animation="border" role="status" />
         </div>
       )
     }
 
     return (
-      <div style={{maxWidth: "1160px", margin: "0 auto"}}>
+      <div style={{ maxWidth: "1160px", margin: "0 auto" }}>
         <BrowserRouter>
           <div>
             <Header authenticated={this.state.authenticated} />
-            <div className="main-content" style={{padding: "1em"}}>
+            <div className="main-content" style={{ padding: "1em" }}>
               <div className="workspace">
                 <Route exact path="/login" component={Login} />
                 <Route exact path="/register" component={Register} />
                 <Route exact path="/logout" component={Logout} />
                 <Route exact path="/" render={() => (
                   <SubmitReview authenticated={this.state.authenticated} />
-                  )}
+                )}
                 />
-                <Route exact path="/SubmitForm" component={SubmitForm}/>
-                <Route exact path="/ExistingSubmitForm" component={ExistingSubmitForm}/>
-                <Route exact path="/About" component={About}/>
-                <Container>
+                <Route exact path="/SubmitForm" component={SubmitForm} />
+                <Route exact path="/ExistingSubmitForm" render={() => (
+                  <ExistingSubmitForm profs={this.state.options} />
+                )} />
+                <Route exact path="/About" component={About} />
+                <Route exact path="/" render={() => (
+                  <RecentReviews />
+                )} />
+                {/*<Container>
                   <Row>
                     <Col><Route exact path="/" component={RecentReviews} /></Col>
                     <Col>
@@ -116,6 +110,7 @@ class App extends Component {
                     </Col>
                   </Row>
                 </Container>
+                        */}
                 {/* <Route exact path="/songs" render={(props) => {
                   return (
                     // <SongList songs={this.state.songs} />
@@ -140,49 +135,3 @@ class App extends Component {
 }
 
 export default App;
-
-
-
-
-/*
-import React, { Component } from 'react';
-import './App.css';
-import firebase from 'firebase/app';
-
-
-class App extends Component {
-
-  constructor() {
-    super();
-    this.state = {
-      speed: 10
-    };
-  }
-
-  componentDidMount() {
-    // const rootRef = firebase.database().ref().child('react');
-    // const speedRef = rootRef.child('speed');
-
-    // speedRef.on('value', snap => {
-    //   this.setState({
-    //     speed: snap.val()
-    //   })
-    // })
-    
-    // this.setState({
-    //   speed: 25
-    // })
-
-  }
-
-  render() {
-    return (
-      <div className="App">
-        <h1>{this.state.speed}</h1>
-      </div>
-    );
-  }
-}
-
-export default App;
-*/

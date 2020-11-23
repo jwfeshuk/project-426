@@ -1,5 +1,3 @@
-import Review from "../Review";
-import Professor from '../Professor.js'
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Card, Button, Form, Col } from 'react-bootstrap';
@@ -22,46 +20,91 @@ class SubmitForm extends Component {
             specifics: ""
         }
 
+        let profCol = app.firestore().collection("/professors")
+
+        profCol.get().then((profs) => {
+            let tempNames = []
+            profs.forEach((prof) => {
+                let professor = prof.data()
+                tempNames.push((professor.first + professor.last).toLowerCase().replace(/[^a-zA-Z0-9 ]/g, ""))
+            })
+            this.setState({names: tempNames})
+        }).catch(() => {
+            console.log('Something went wrong');
+        })
+
         this.onSubmit = this.onSubmit.bind(this);
     }
 
     onSubmit(e) {
         e.preventDefault();
-        if (!!this.state.first && !!this.state.last && !!this.state.courseCode && this.state.rating != 0 && this.state.difficulty != 0 && !!this.state.takeAgain
-            && !!this.state.useTextbook && !!this.state.specifics) {
+        if (!!this.state.first && !!this.state.last && !!this.state.courseCode && this.state.rating != 0 && this.state.difficulty != 0 
+            && !!this.state.takeAgain && !!this.state.useTextbook && !!this.state.specifics) {
             
-            let professor = {
+            if (this.state.names.includes((this.state.first + this.state.last).toLowerCase().replace(/[^a-zA-Z0-9 ]/g, ""))) {
+                alert("This professor already exists! Redirecting you to the Existing Professor Review page.")
+                window.location.href = "/ExistingSubmitForm"
+                return;
+            }
+
+
+            let professorObj = {
                 first: this.state.first,
                 last: this.state.last
             }
-            
-            let newProf = Professor.create(professor)
 
-            let review = {
-                profID: newProf.profID,
-                courseCode: this.state.courseCode,
-                rating: this.state.rating,
-                difficulty: this.state.difficulty,
-                takeAgain: this.state.takeAgain,
-                useTexbook: this.state.useTextbook,
-                specifics: this.state.specifics
-            }
+            let profCol = app.firestore().collection("/professors")
 
-            if (!!this.state.attendance) {
-                review.attendance = this.state.attendance
-            }
+            profCol.add(professorObj).then((profRef) => {
+                professorObj.profID = profRef.id
+                
+                profCol.doc(profRef.id).update({
+                    profID: profRef.id
+                })
 
-            if (!!review.grade) {
-                review.grade = this.state.grade
-            }
+                let review = {
+                    profID: professorObj.profID,
+                    courseCode: this.state.courseCode,
+                    rating: this.state.rating,
+                    difficulty: this.state.difficulty,
+                    takeAgain: this.state.takeAgain,
+                    useTexbook: this.state.useTextbook,
+                    specifics: this.state.specifics
+                }
+                
+                if (!!this.state.attendance) {
+                    review.attendance = this.state.attendance
+                }
     
-            if (!!review.tags) {
-                review.tags = this.state.tags
-            }
-
-            let newReview = Review.create(review)
-
-            newProf.update(newReview)
+                if (!!review.grade) {
+                    review.grade = this.state.grade
+                }
+        
+                if (!!review.tags) {
+                    review.tags = this.state.tags
+                }
+    
+                let reviewCol = app.firestore().collection("/reviews")
+        
+                let today = new Date()
+                review.lastUpdated = today.getTime()
+                review.lastUpdatedPretty = (today.getMonth() + 1) + '/' + today.getDate() + '/' + today.getFullYear()
+    
+                let reviewDB = reviewCol.add(review).then((reviewRef) => {
+                    review.reviewID = reviewRef.id
+    
+                    reviewCol.doc(reviewRef.id).update({
+                        reviewID: reviewRef.id
+                    })
+                    window.location.href = "/"
+                }).catch((error) => {
+                    console.log(error);
+                })
+            }).catch((error) => {
+                console.log(error);
+            })
+        } else {
+            alert("You haven't filled out the form!")
         }
     }
 
@@ -74,7 +117,10 @@ class SubmitForm extends Component {
                         <Form.Row>
                             <Form.Group as={Col} controlId="formProfFirst">
                                 <Form.Label>Professor's First Name</Form.Label>
-                                <Form.Control type="name" placeholder="e.g. Ketan" onChange={e => this.setState({ first: e.target.value })} />
+                                <Form.Control type="name" placeholder="e.g. Ketan" onChange={e => {
+                                    this.setState({ first: e.target.value })
+
+                                }} />
                             </Form.Group>
 
                             <Form.Group as={Col} controlId="formProfFirst">
@@ -195,7 +241,7 @@ class SubmitForm extends Component {
                         </Form.Row>
                         <Form.Label>Here's your chance to be more specific <em>(Limit 350 Characters)</em></Form.Label>
                         <Form.Control maxLength="350" style={{marginBottom: "8px", height: "150px"}} as="textarea" onChange={e => this.setState({ specifics: e.target.value })} />
-                        <Button style={{marginRight: "5px", backgroundColor: "#13294B", borderColor: "#13294B"}} onClick={this.onSubmit} href="/" type="submit">Submit</Button>
+                        <Button style={{marginRight: "5px", backgroundColor: "#13294B", borderColor: "#13294B"}} onClick={this.onSubmit} type="submit">Submit</Button>
                         <Button style={{backgroundColor: "#13294B", borderColor: "#13294B"}} href="/">Cancel</Button>
                     </Form>
                 </Card.Body>
