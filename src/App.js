@@ -20,6 +20,8 @@ import { app, base } from './base';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Col, Container, Row, Spinner } from 'react-bootstrap';
 
+import './App.css';
+
 class App extends Component {
   constructor() {
     super();
@@ -95,11 +97,14 @@ class App extends Component {
         <BrowserRouter>
           <div>
             <Header authenticated={this.state.authenticated} options={this.state.options}/>
-            <div className="main-content" style={{ padding: "1em" }}>
+            <div id="main-content" style={{ padding: "1em" }}>
               <div className="workspace">
                 <Route exact path="/login" component={Login} />
                 <Route exact path="/register" component={Register} />
                 <Route exact path="/logout" component={Logout} />
+                <Route exact path="/profile" render={() => (
+                  <Profile authenticated={this.state.authenticated} />
+                )} />
                 <Route exact path="/" render={() => (
                   <SubmitReview authenticated={this.state.authenticated} />
                 )}

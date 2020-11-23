@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Card, Button } from 'react-bootstrap';
 import { app } from '../base';
 
 class Profile extends Component {
@@ -9,11 +11,19 @@ class Profile extends Component {
     }
 
     render() {
+
+        if (this.props.authenticated !== true) {
+            return <Redirect to='/' />
+        }
+
         return (
+
+            // this.props.authenticated
+
+
+
             <>
-                <div>
-                    Test
-                </div>
+                Here
             </>
         )
     }

@@ -45,7 +45,7 @@ class Header extends Component {
 
     mapSearches(_searches) {
         let searchresult = _searches.map((s, i) => {
-            return <Button key={i} href="/search">{s.display}</Button>
+            return <Button style={{width: "100%"}} key={i} value={s} href="/search">{s.display}</Button>
         })
         return searchresult;
     }
@@ -62,7 +62,7 @@ class Header extends Component {
                             ?
                             <Form inline style={{ width: "90%" }}>
                                 <FormControl style={{ width: "100%" }} variant="outline-light" type="text" placeholder="Search Professors..." className="mr-sm-2" value={this.state.query} onChange={this.changeQuery} />
-                                <ListGroup>
+                                <ListGroup style={{ width: "100%" }}>
                                     {this.mapSearches(_searches)}
                                 </ListGroup>
                             </Form>
@@ -77,7 +77,10 @@ class Header extends Component {
                         <Nav.Link href="/about" style={{color: "#ffffff"}}>About</Nav.Link>
                         {this.props.authenticated
                             ?
+                            <>
+                            <Nav.Link href="/profile" style={{color: "#ffffff"}}>Profile</Nav.Link>
                             <Nav.Link href="/logout" style={{color: "#ffffff"}}>Logout</Nav.Link>
+                            </>
                             :
                             <>
                             <Nav.Link className="text-nowrap" href="/login" style={{color: "#ffffff"}}>Login</Nav.Link>
