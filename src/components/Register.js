@@ -36,7 +36,8 @@ class Register extends Component {
             if (user && user.user.email) {
                 app.firestore().collection("/users").doc(user.user.uid).set({
                     email: user.user.email,
-                    password: password
+                    password: password,
+                    uid: user.user.uid
                 })
                 this.registerForm.reset()
                 this.setState({redirect: true})

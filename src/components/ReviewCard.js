@@ -12,12 +12,6 @@ class ReviewCard extends Component {
         this.state = {
             prof: null,
             render: false,
-            takeAgain: "",
-            useTextbook: "",
-            attendance: "",
-            grade: "",
-            tags: "",
-            specifics: "",
             tags: []
         }
     }

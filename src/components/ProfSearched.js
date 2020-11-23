@@ -5,39 +5,50 @@ import { app } from '../base';
 import ReviewCard from './ReviewCard'
 
 class ProfSearched extends Component {
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
 
         this.state = {
-            professor: this.props.prof,
+            id: props.match.params.id,
+            prof: '',
             reviews: [],
             render: false
         }
     }
-    
-    componentWillMount() {
-        app.firestore().collection("/reviews").where('profID', '==', this.props.prof.profID).get()
+
+    componentDidMount() {
+        app.firestore().collection("/professors").doc(this.state.id).get()
+            .then((prof) => prof.data())
+            .then((data) => this.setState({prof: data}))
+
+        
+        app.firestore().collection("/reviews").where("profID", "==", this.state.id).get()
             .then((reviews) => {
                 let temp = []
                 reviews.forEach((review) => {
                     let newReview = review.data()
                     temp.push(newReview)
                 })
-                this.setState({ reviews: temp, render: true })
-            }).catch((error) => {
-                console.log(error)
-            })
+                return temp
+            }).then((array) => this.setState({reviews: array, render: true}))
     }
 
     render() {
-        return(
-            <Card>
+        return (
+            (!this.state.render)
+            ?<Spinner animation="border" role="status" />
+            :<Card>
                 <Card.Header className="text-center" style={{backgroundColor: "#13294B", color: "#ffffff", fontSize: "28px"}}>{this.props.prof.first} {this.props.prof.last}'s Reviews</Card.Header>
                 <ListGroup variant="flush">
-                    {(!this.state.render)}
-                </ListGroup>
-             </Card>
-            
+                    {this.state.reviews.map((review) => {
+                        return (<ListGroup.Item style={{backgroundColor: "#97c0e6"}}>
+                                    <ReviewCard review={review}></ReviewCard>
+                                </ListGroup.Item>)
+                    })}
+                </ListGroup> 
+            </Card>
         )
     }
 }
+
+export default ProfSearched;

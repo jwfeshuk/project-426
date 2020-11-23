@@ -1,26 +1,133 @@
-import React from 'react';
+// import React from 'react';
+// import TextField from '@material-ui/core/TextField';
+// import Autocomplete from '@material-ui/lab/Autocomplete';
+//
+// export default function ComboBox() {
+
+//     // let onSubmit = function (e) {
+//     //     e.preventDefault();
+//     //     alert('onsubmit');
+//     // }
+
+//     return (
+//         <Autocomplete
+//             id="combo-box-demo"
+//             className="form-control"
+//             freeSolo={true}
+//             options={options}
+//             getOptionLabel={(option) => option.title}
+//             style={{ width: "100%", backgroundColor: "#FFF", color: "#FFF", height: "55px", padding: "6px" }}
+//             renderInput={(params) => <TextField {...params} label="Search for a Professor..." variant="outlined" onSubmit={ alert('stop') } />}
+//             size="small"
+
+//             // onSubmit = (e) => {
+//             //     e.preventDefault();
+//             //     console.log('SUBMIT')
+//             // }
+//         />
+//     );
+// }
+
+// 
+
+
+import React, { Component } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 
-export default function ComboBox() {
-    return (
-        <Autocomplete
-            id="combo-box-demo"
-            className="form-control"
-            freeSolo= {true}
-            options={options}
-            getOptionLabel={(option) => option.title}
-            style={{ width: "100%", backgroundColor: "#FFF", color: "#FFF", height: "55px", padding: "6px"}}
-            renderInput={(params) => <TextField {...params} label="Search for a Professor..." variant="outlined" />}
-            size="small"
-        />
-    );
+class SearchProfs extends Component {
+
+    constructor() {
+        super()
+        this.state = {
+            options: [
+                { title: 'The Shawshank Redemption', year: 1994 },
+                { title: 'The Godfather', year: 1972 },
+            ]
+        }
+
+        this.handleSubmit = this.handleSubmit.bind(this)
+
+    }
+
+    handleSubmit(target) {
+        console.log(target.target.value)
+        alert('THIS');
+        console.log('THIS')
+        setTimeout(3000)
+    }
+
+    handleChange(target) {
+        console.log(target.target.value)
+    }
+
+    render() {
+        return (
+            <Autocomplete
+                id="combo-box-demo"
+                className="form-control"
+                freeSolo
+                options={this.state.options}
+                getOptionLabel={(option) => option.title}
+                style={{ width: "100%", backgroundColor: "#FFF", color: "#FFF", height: "55px", padding: "6px" }}
+                renderInput={(params) => <TextField {...params} label="Search for a Professor..." variant="outlined" onChange={() => this.handleChange} onSubmit={() => this.handleSubmit} />}
+                size="small"
+                
+                onChange = {(event, value) => console.log(value)}
+
+                onSubmit = { (e) => {
+                    e.preventDefault();
+                    alert('HERE')
+                    // setTimeout(3000)
+                    
+                }}
+
+
+
+            // onSubmit = {
+            //     e.preventDefault();
+            //     console.log('SUBMIT')
+            // }
+            />
+        )
+    }
+
 }
 
-let options = [
-    { title: 'The Shawshank Redemption', year: 1994 },
-    { title: 'The Godfather', year: 1972 },
-]
+export default SearchProfs
+
+
+//     // let onSubmit = function (e) {
+    //     //     e.preventDefault();
+    //     //     alert('onsubmit');
+    //     // }
+
+    //     return (
+    //         <Autocompletee
+    //             id="combo-box-demo"
+    //             className="form-control"
+    //             freeSolo={true}
+    //             options={options}
+    //             getOptionLabel={(option) => option.title}
+    //             style={{ width: "100%", backgroundColor: "#FFF", color: "#FFF", height: "55px", padding: "6px" }}
+    //             renderInput={(params) => <TextField {...params} label="Search for a Professor..." variant="outlined" onSubmit={ alert('stop') } />}
+    //             size="small"
+
+    //             // onSubmit = (e) => {
+    //             //     e.preventDefault();
+    //             //     console.log('SUBMIT')
+    //             // }
+    //         />
+    //     );
+    // }
+
+    // let options = [
+    //     { title: 'The Shawshank Redemption', year: 1994 },
+    //     { title: 'The Godfather', year: 1972 },
+    // ]
+
+
+
 
 
 

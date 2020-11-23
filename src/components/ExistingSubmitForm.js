@@ -30,46 +30,65 @@ class ExistingSubmitForm extends Component {
 
     onSubmit(e) {
         e.preventDefault();
-        if (!!this.state.profID && !!this.state.courseCode && this.state.rating != 0 && this.state.difficulty != 0 
+        if (!!this.state.profID && !!this.state.courseCode && this.state.rating != 0 && this.state.difficulty != 0
             && !!this.state.takeAgain && !!this.state.useTextbook && !!this.state.specifics) {
-                let review = {
-                    profID: this.state.profID,
-                    courseCode: this.state.courseCode,
-                    rating: this.state.rating,
-                    difficulty: this.state.difficulty,
-                    takeAgain: this.state.takeAgain,
-                    useTextbook: this.state.useTextbook,
-                    specifics: this.state.specifics
-                }
-                
-                if (!!this.state.attendance) {
-                    review.attendance = this.state.attendance
-                }
-    
-                if (typeof this.state.grade != "undefined") {
-                    review.grade = this.state.grade
-                }
-        
-                if (typeof this.state.tags != "undefined") {
-                    review.tags = this.state.tags
-                }
-    
-                let reviewCol = app.firestore().collection("/reviews")
-        
-                let today = new Date()
-                review.lastUpdated = today.getTime()
-                review.lastUpdatedPretty = (today.getMonth() + 1) + '/' + today.getDate() + '/' + today.getFullYear()
-    
-                let reviewDB = reviewCol.add(review).then((reviewRef) => {
-                    review.reviewID = reviewRef.id
-    
-                    reviewCol.doc(reviewRef.id).update({
-                        reviewID: reviewRef.id
-                    })
-                    window.location.href = "/"
-                }).catch((error) => {
-                    console.log(error);
+            let review = {
+                profID: this.state.profID,
+                courseCode: this.state.courseCode,
+                rating: this.state.rating,
+                difficulty: this.state.difficulty,
+                takeAgain: this.state.takeAgain,
+                useTextbook: this.state.useTextbook,
+                specifics: this.state.specifics
+            }
+
+            if (!!this.state.attendance) {
+                review.attendance = this.state.attendance
+            }
+
+            if (typeof this.state.grade != "undefined") {
+                review.grade = this.state.grade
+            }
+
+            if (typeof this.state.tags != "undefined") {
+                review.tags = this.state.tags
+            }
+
+            let reviewCol = app.firestore().collection("/reviews")
+
+            let today = new Date()
+            review.lastUpdated = today.getTime()
+            review.lastUpdatedPretty = (today.getMonth() + 1) + '/' + today.getDate() + '/' + today.getFullYear()
+
+            let reviewDB = reviewCol.add(review).then((reviewRef) => {
+                review.reviewID = reviewRef.id
+
+                reviewCol.doc(reviewRef.id).update({
+                    reviewID: reviewRef.id
                 })
+                
+                let currentUser = app.auth().currentUser
+
+                let userCol = app.firestore().collection("/users")
+
+                userCol.doc(currentUser.uid).get().then((user) =>  {
+                    let userData = user.data()
+                    console.log(userData)
+                    if (typeof userData.reviews != 'undefined' && userData.reviews != null && userData.length > 0) {
+                        userCol.doc(currentUser.uid).update({reviews: [reviewRef.id]})
+                    } else {
+                        userData.reviews.push(reviewRef.id);
+                        userCol.doc(currentUser.uid).update({reviews: userData.reviews})
+                    }
+                    console.log(userData)
+                })
+
+
+                window.location.href = "/"
+            }).catch((error) => {
+                console.log(error);
+            })
+
         } else {
             alert("You didn't finish the form! Please go back and finish.")
         }
@@ -77,10 +96,10 @@ class ExistingSubmitForm extends Component {
 
     render() {
         return (
-            <Card style={{ width: "90%", marginLeft: "5%", backgroundColor: "#97c0e6", color: "#13294B"}}>
-                <Card.Title className="text-center" style={{fontSize: "50px", fontFamily: "sans-serif", paddingTop: "15px"}}>Existing Professor Review Form</Card.Title>
+            <Card style={{ width: "90%", marginLeft: "5%", backgroundColor: "#97c0e6", color: "#13294B" }}>
+                <Card.Title className="text-center" style={{ fontSize: "50px", fontFamily: "sans-serif", paddingTop: "15px" }}>Existing Professor Review Form</Card.Title>
                 <Card.Body>
-                    <Form>
+                    <Form style={{ border: "1px solid darkgrey", padding: "10px", borderRadius: "5px" }}>
                         <Form.Row>
                             <Form.Group as={Col} controlId="formProfFirst">
                                 <Form.Label>Professor</Form.Label>
@@ -88,9 +107,10 @@ class ExistingSubmitForm extends Component {
                             </Form.Group>
                             <Form.Group as={Col} controlId="formCourseCode">
                                 <Form.Label>Course Code</Form.Label>
-                                <Form.Control style={{height: "53px"}}type="name" placeholder="e.g. COMP 426" onChange={e => this.setState({ courseCode: e.target.value })} />
+                                <Form.Control style={{ height: "53px" }} type="name" placeholder="e.g. COMP 426" onChange={e => this.setState({ courseCode: e.target.value })} />
                             </Form.Group>
                         </Form.Row>
+                        <hr style={{ marginTop: "0", marginBottom: "10px" }} />
                         <Form.Row>
                             <Form.Group as={Col}>
                                 <Form.Label>How would you rate this Professor?</Form.Label>
@@ -133,6 +153,7 @@ class ExistingSubmitForm extends Component {
                                 </Form.Control>
                             </Form.Group>
                         </Form.Row>
+                        <hr style={{ marginTop: "0", marginBottom: "10px" }} />
                         <Form.Row>
                             <Form.Group as={Col}>
                                 <Form.Label>Would you take this professor again?</Form.Label>
@@ -156,6 +177,7 @@ class ExistingSubmitForm extends Component {
                                 </Form.Group>
                             </Form.Group>
                         </Form.Row>
+                        <hr style={{ marginTop: "0", marginBottom: "10px" }} />
                         <Form.Row>
                             <Form.Group as={Col}>
                                 <Form.Label>Which of these best describes the professor? <em>(Optional)</em></Form.Label>
@@ -198,10 +220,16 @@ class ExistingSubmitForm extends Component {
                                 </Form.Group>
                             </Form.Group>
                         </Form.Row>
-                        <Form.Label>Here's your chance to be more specific <em>(Limit 350 Characters)</em></Form.Label>
-                        <Form.Control maxLength="350" style={{marginBottom: "8px", height: "150px"}} as="textarea" onChange={e => this.setState({ specifics: e.target.value })} />
-                        <Button style={{marginRight: "5px", backgroundColor: "#13294B", borderColor: "#13294B"}} onClick={this.onSubmit} type="submit">Submit</Button>
-                        <Button style={{backgroundColor: "#13294B", borderColor: "#13294B"}} href="/">Cancel</Button>
+                        <hr style={{ marginTop: "0", marginBottom: "10px" }} />
+                        <Form.Row>
+                            <Form.Group as={Col}>
+                                <Form.Label>Here's your chance to be more specific <em>(Limit 350 Characters)</em></Form.Label>
+                                <Form.Control maxLength="350" style={{ marginBottom: "8px", height: "150px" }} as="textarea" onChange={e => this.setState({ specifics: e.target.value })} />
+                                <Button style={{ marginRight: "5px", backgroundColor: "#13294B", borderColor: "#13294B" }} onClick={this.onSubmit} type="submit">Submit</Button>
+                                <Button style={{ backgroundColor: "#13294B", borderColor: "#13294B" }} href="/">Cancel</Button>
+                            </Form.Group>
+                        </Form.Row>
+
                     </Form>
                 </Card.Body>
             </Card>

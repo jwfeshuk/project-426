@@ -30,9 +30,7 @@ class SubmitReview extends Component {
                     <Card.Subtitle style={{fontSize: '25px', color: "#ffffff"}}>Or Give Your Own Opinion</Card.Subtitle>
                     <Card.Text></Card.Text>
                        {this.props.authenticated
-                            ?this.state.isClicked
-                                ?<div><Button style={buttonStyle} variant="secondary" href="/ExistingSubmitForm">Review an Existing Professor</Button><Button style={{width: "225px", backgroundColor: "#13294B"}} variant="secondary" href="/SubmitForm">Review a New Professor</Button></div>
-                                :<Button variant="secondary" style={{backgroundColor: "#13294B"}} onClick={this.writeReview}>Write A Review!</Button>
+                            ?<Button variant="secondary" style={{backgroundColor: "#13294B"}} href="/ExistingSubmitForm">Write A Review!</Button>
                             :<Button variant="secondary" style={{backgroundColor: "#13294B"}} href="/Login">Login to Post Reviews</Button>
                         }
                 </Card.Body>

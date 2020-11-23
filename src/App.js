@@ -9,10 +9,9 @@ import Logout from './components/Logout';
 import Profile from './components/Profile';
 import SubmitReview from './components/SubmitReview';
 import RecentReviews from './components/RecentReviews';
-import Top3Prof from './components/Top3Prof';
-import SubmitForm from './components/SubmitForm';
 import About from './components/About'
 import ExistingSubmitForm from './components/ExistingSubmitForm'
+import ProfSearched from './components/ProfSearched'
 // import ChordEditor from './components/ChordEditor';
 // import SongList from './components/SongList';
 import { app, base } from './base';
@@ -111,7 +110,6 @@ class App extends Component {
                   <SubmitReview authenticated={this.state.authenticated} />
                 )}
                 />
-                <Route exact path="/SubmitForm" component={SubmitForm} />
                 <Route exact path="/ExistingSubmitForm" render={() => (
                   <ExistingSubmitForm />
                 )} />
@@ -119,6 +117,7 @@ class App extends Component {
                 <Route exact path="/" render={() => (
                   <RecentReviews recents={this.state.recents} />
                 )} />
+                <Route exact path="/professor/:id" component={ProfSearched} />
                 {/*<Container>
                   <Row>
                     <Col><Route exact path="/" component={RecentReviews} /></Col>
