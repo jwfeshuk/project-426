@@ -29,7 +29,7 @@ class Header extends Component {
                         }
                     </Nav>
                     <Nav className="ml-auto">
-                        <Nav.Link href="#about" style={{color: "#ffffff"}}>About</Nav.Link>
+                        <Nav.Link href="/about" style={{color: "#ffffff"}}>About</Nav.Link>
                         {this.props.authenticated
                             ?
                             <Nav.Link href="/logout" style={{color: "#ffffff"}}>Logout</Nav.Link>

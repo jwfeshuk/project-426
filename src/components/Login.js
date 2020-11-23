@@ -74,6 +74,7 @@ class Login extends Component {
     }
 
     return (
+      
       <div style={loginStyles}>
         {/* <Toaster ref={(element) => { this.toaster = element }} /> */}
         {/* <button style={{width: "100%"}} className="pt-button pt-intent-primary" onClick={() => { this.authWithFacebook() }}>Log In with Facebook</button> */}

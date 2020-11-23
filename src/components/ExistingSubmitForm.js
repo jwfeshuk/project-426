@@ -1,10 +1,11 @@
 import Review from "../Review";
+import Professor from '../Professor.js'
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Card, Button, Form, Col } from 'react-bootstrap';
 import { app } from '../base';
 
-class EditForm extends Component {
+class ExistingSubmitForm extends Component {
     constructor() {
         super();
         this.state = {
@@ -25,23 +26,6 @@ class EditForm extends Component {
     }
 
     onSubmit(e) {
-        e.preventDefault();
-        if (!!this.state.first && !!this.state.last && !!this.state.courseCode && this.state.rating != 0 && this.state.difficulty != 0 && !!this.state.takeAgain
-            && !!this.state.useTextbook && !!this.state.specifics) {
-            
-            let professor = {
-                first: this.state.first,
-                last: this.state.last
-            }
-
-            
-
-            if (!!this.state.attendance) {
-                
-            }
-        }
-        
-        //Review.create(review);
     }
 
     render() {
@@ -182,4 +166,4 @@ class EditForm extends Component {
     }
 }
 
-export default EditForm;
+export default ExistingSubmitForm;

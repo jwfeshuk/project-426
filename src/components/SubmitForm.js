@@ -1,10 +1,11 @@
 import Review from "../Review";
+import Professor from '../Professor.js'
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Card, Button, Form, Col } from 'react-bootstrap';
 import { app } from '../base';
 
-class EditForm extends Component {
+class SubmitForm extends Component {
     constructor() {
         super();
         this.state = {
@@ -33,20 +34,41 @@ class EditForm extends Component {
                 first: this.state.first,
                 last: this.state.last
             }
-
             
+            let newProf = Professor.create(professor)
+
+            let review = {
+                profID: newProf.profID,
+                courseCode: this.state.courseCode,
+                rating: this.state.rating,
+                difficulty: this.state.difficulty,
+                takeAgain: this.state.takeAgain,
+                useTexbook: this.state.useTextbook,
+                specifics: this.state.specifics
+            }
 
             if (!!this.state.attendance) {
-                
+                review.attendance = this.state.attendance
             }
+
+            if (!!review.grade) {
+                review.grade = this.state.grade
+            }
+    
+            if (!!review.tags) {
+                review.tags = this.state.tags
+            }
+
+            let newReview = Review.create(review)
+
+            newProf.update(newReview)
         }
-        
-        //Review.create(review);
     }
 
     render() {
         return (
             <Card style={{ width: "90%", marginLeft: "5%", backgroundColor: "#97c0e6", color: "#13294B"}}>
+                <Card.Title className="text-center" style={{fontSize: "50px", fontFamily: "sans-serif", paddingTop: "15px"}}>Professor Review Form</Card.Title>
                 <Card.Body>
                     <Form>
                         <Form.Row>
@@ -171,9 +193,9 @@ class EditForm extends Component {
                                 </Form.Group>
                             </Form.Group>
                         </Form.Row>
-                        <Form.Label>Here's your chance to be more specific</Form.Label>
-                        <Form.Control style={{marginBottom: "8px"}} as="textarea" onChange={e => this.setState({ specifics: e.target.value })} />
-                        <Button style={{marginRight: "5px", backgroundColor: "#13294B", borderColor: "#13294B"}} onClick={this.onSubmit} type="submit">Submit</Button>
+                        <Form.Label>Here's your chance to be more specific <em>(Limit 350 Characters)</em></Form.Label>
+                        <Form.Control maxLength="350" style={{marginBottom: "8px", height: "150px"}} as="textarea" onChange={e => this.setState({ specifics: e.target.value })} />
+                        <Button style={{marginRight: "5px", backgroundColor: "#13294B", borderColor: "#13294B"}} onClick={this.onSubmit} href="/" type="submit">Submit</Button>
                         <Button style={{backgroundColor: "#13294B", borderColor: "#13294B"}} href="/">Cancel</Button>
                     </Form>
                 </Card.Body>
@@ -182,4 +204,4 @@ class EditForm extends Component {
     }
 }
 
-export default EditForm;
+export default SubmitForm;

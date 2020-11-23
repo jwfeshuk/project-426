@@ -35,10 +35,12 @@ class Professor {
 Professor.create = (professor) => {
     let profDB = app.firestore().collection("/professors").doc()
 
-    professor.profID = profDB.getId()
-    profDB.add(professor)
+    professor.profID = profDB.getPath()
 
-    return new Professor(professor)
+    console.log(professor.profID)
+    /*profDB.add(professor)
+
+    return new Professor(professor)*/
 }
 
 Professor.read = (profID) => {

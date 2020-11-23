@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Card, Button } from 'react-bootstrap';
 
-
 class SubmitReview extends Component {
     constructor() {
         super();
@@ -30,7 +29,7 @@ class SubmitReview extends Component {
                     <Card.Text></Card.Text>
                        {this.props.authenticated
                             ?this.state.isClicked
-                                ?<div><Button style={buttonStyle} variant="secondary" href="/EditForm">Review an Existing Professor</Button><Button style={{width: "225px", backgroundColor: "#13294B"}} variant="secondary" href="/EditForm">Review a New Professor</Button></div>
+                                ?<div><Button style={buttonStyle} variant="secondary" href="/ExistingSubmitForm">Review an Existing Professor</Button><Button style={{width: "225px", backgroundColor: "#13294B"}} variant="secondary" href="/SubmitForm">Review a New Professor</Button></div>
                                 :<Button variant="secondary" style={{backgroundColor: "#13294B"}} onClick={this.writeReview}>Write A Review!</Button>
                             :<Button variant="secondary" style={{backgroundColor: "#13294B"}} href="/Login">Login to Post Reviews</Button>
                         }

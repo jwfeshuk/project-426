@@ -8,6 +8,7 @@ class Review {
         this.rating = review.rating //num
         this.difficulty = review.difficulty //num
         this.takeAgain = review.takeAgain //boolean
+        this.forCredit = review.forCredit //boolean
         this.useTexbook = review.useTextbook //boolean
         
         if (typeof review.attendance != "undefined") {
@@ -28,7 +29,7 @@ class Review {
     }
 
     update(review) {
-        const { courseCode, rating, difficulty, takeAgain, useTextbook, specifics, lastUpdated, lastUpdatedPretty } = review
+        const { courseCode, rating, difficulty, takeAgain, forCredit, useTextbook, specifics, lastUpdated, lastUpdatedPretty } = review
         let reviewRef = app.firestore().collection("/reviews").doc(this.reviewID)
 
         reviewRef.update({
@@ -36,6 +37,7 @@ class Review {
             rating: rating,
             difficulty: difficulty,
             takeAgain: takeAgain,
+            forCredit: forCredit,
             useTextbook: useTextbook,
             specifics: specifics,
             lastUpdated: lastUpdated,
@@ -51,6 +53,7 @@ class Review {
         this.rating = rating
         this.difficulty = difficulty
         this.takeAgain = takeAgain
+        this.forCredit = forCredit
         this.useTextbook = useTextbook
         this.specifics = specifics
         this.lastUpdated = lastUpdated
