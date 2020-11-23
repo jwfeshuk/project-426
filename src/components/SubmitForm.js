@@ -77,11 +77,11 @@ class SubmitForm extends Component {
                     review.attendance = this.state.attendance
                 }
     
-                if (typeof review.grade != "undefined") {
+                if (typeof this.state.grade != "undefined") {
                     review.grade = this.state.grade
                 }
         
-                if (typeof review.tags != "undefined") {
+                if (typeof this.state.tags != "undefined") {
                     review.tags = this.state.tags
                 }
     
