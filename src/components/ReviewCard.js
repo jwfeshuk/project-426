@@ -6,15 +6,8 @@ import blue from "./blue.png"
 import white from "./white.png"
 
 class ReviewCard extends Component {
-    constructor(props) {
-        super(props);
-    }
-    
-    getProps() {
-        return this.props
-    }
-
     render() {
+        console.log(this.props)
         return (
         <Card style={{backgroundColor: "#13294B"}}>
             <Card.Title></Card.Title>
@@ -22,7 +15,7 @@ class ReviewCard extends Component {
                 <div className="ratings" style={{columnCount: 1}}>
                     <div>
                         <Figure>
-                            <Figure.Caption style={{color: "#ffffff", textAlign: "center", fontSize: "80%"}}>Quality</Figure.Caption>
+                            <Figure.Caption style={{color: "#ffffff", textAlign: "left", fontSize: "80%"}}>Quality</Figure.Caption>
                             <Figure.Image
                                 width={50}
                                 height={50}
@@ -30,7 +23,7 @@ class ReviewCard extends Component {
                                 src={blue}
                                 style={{marginTop: "5px"}}
                             />
-                            <span className="rating" style={{position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)"}}>{this.getProps().review.rating}</span>
+                            <span className="rating" style={{position: "relative", left: "-50%", fontSize: "22px", fontWeight: "bold"}}>{this.props.review.rating}.0</span>
                         </Figure>
                     </div>
                     
@@ -44,7 +37,7 @@ class ReviewCard extends Component {
                                 src={white}
                                 style={{marginTop: "5px"}}
                             />
-                            <span className="rating" style={{position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)"}}>{this.getProps().review.difficulty}</span>
+                            <span className="rating" style={{position: "relative", left: "-50%", fontSize: "22px", fontWeight: "bold"}}>{this.props.review.difficulty}.0</span>
                         </Figure>
                     </div>
                 </div>
