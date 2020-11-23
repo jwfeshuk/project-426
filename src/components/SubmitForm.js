@@ -47,7 +47,6 @@ class SubmitForm extends Component {
                 return;
             }
 
-
             let professorObj = {
                 first: this.state.first,
                 last: this.state.last
@@ -64,6 +63,8 @@ class SubmitForm extends Component {
 
                 let review = {
                     profID: professorObj.profID,
+                    first: professorObj.first,
+                    last: professorObj.last,
                     courseCode: this.state.courseCode,
                     rating: this.state.rating,
                     difficulty: this.state.difficulty,

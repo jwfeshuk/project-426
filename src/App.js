@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {UseEffect, UseState, Component } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 // import { Spinner } from '@blueprintjs/core';
 import Header from './components/Header';
@@ -27,22 +27,6 @@ class App extends Component {
       loading: true,
       options: []
     };
-
-    app.firestore().collection("/professors").get()
-      .then((profs) => {
-        let temp = [];
-        profs.forEach((prof) => {
-          let professor = prof.data()
-          temp.push({
-            id: professor.profID,
-            display: professor.first + " " + professor.last
-          })
-        })
-        this.setState({options: temp})
-      })
-      .catch((error) => {
-        console.log(error);
-    })
   }
 
   componentWillMount() {
@@ -59,6 +43,36 @@ class App extends Component {
         })
       }
     })
+
+    app.firestore().collection("/professors").get()
+      .then((profs) => {
+        let temp = [];
+        profs.forEach((prof) => {
+          let professor = prof.data()
+          temp.push({
+            id: professor.profID,
+            first: professor.first,
+            last: professor.last,
+            display: professor.first + " " + professor.last
+          })
+        })
+        this.setState({options: temp})
+      })
+      .catch((error) => {
+        console.log(error);
+    })
+
+    app.firestore().collection("/reviews").orderBy('lastUpdated').limit(3).get()
+        .then((reviews) => {
+            let temp = []
+            reviews.forEach((review) => {
+                let recent = review.data()
+                temp.push(recent)
+            })
+            this.setState({recents: temp})
+        }).catch((error) => {
+            console.log(error)
+        })
   }
 
   componentWillUnmount() {
@@ -95,7 +109,7 @@ class App extends Component {
                 )} />
                 <Route exact path="/About" component={About} />
                 <Route exact path="/" render={() => (
-                  <RecentReviews />
+                  <RecentReviews recents={this.state.recents}/>
                 )} />
                 {/*<Container>
                   <Row>

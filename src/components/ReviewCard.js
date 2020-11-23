@@ -1,16 +1,36 @@
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Card, Figure } from 'react-bootstrap';
+import { Card, Figure, Spinner } from 'react-bootstrap';
 import { app } from '../base';
 import blue from "./blue.png"
 import white from "./white.png"
 
 class ReviewCard extends Component {
+    constructor() {
+        super()
+        
+        this.state = {
+            prof: null,
+            render: false
+        }
+    }
+    
+    componentWillMount() {
+        app.firestore().collection("/professors").doc(this.props.review.profID).get()
+            .then((prof) => {
+                this.setState({prof: prof.data(), render: true})
+            }).catch((error) => {
+                console.log(error);
+            })
+    }
+
     render() {
-        console.log(this.props)
+        console.log(this.state)
         return (
-        <Card style={{backgroundColor: "#13294B"}}>
-            <Card.Title></Card.Title>
+        !this.state.render
+        ?<Spinner animation="border" role="status" />
+        :<Card style={{backgroundColor: "#13294B"}}>
+            <Card.Title>Professor {this.state.prof.first} {this.state.prof.last}</Card.Title>
             <Card.Body>
                 <div className="ratings" style={{columnCount: 1}}>
                     <div>
