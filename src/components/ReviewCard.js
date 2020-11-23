@@ -11,11 +11,62 @@ class ReviewCard extends Component {
         
         this.state = {
             prof: null,
-            render: false
+            render: false,
+            takeAgain: "",
+            useTextbook: "",
+            attendance: "",
+            grade: "",
+            tags: "",
+            specifics: "",
+            tags: []
         }
     }
     
     componentWillMount() {
+        if (this.props.review.takeAgain) {
+            this.setState({
+                takeAgain: (<p>Would Take Again: <strong>Yes</strong></p>) 
+            })
+        } else {
+            this.setState({
+                takeAgain: (<p>Would Take Again: <strong>No</strong></p>)
+            })
+        }
+
+        if (this.props.review.useTextbook) {
+            this.setState({
+                useTextbook: (<p>Textbook: <strong>Yes</strong></p>) 
+            })
+        } else {
+            this.setState({
+                useTextbook: (<p>Textbook: <strong>No</strong></p>)
+            })
+        }
+
+        if (typeof this.props.review.attendance != "undefined") {
+             if (this.props.review.attendance) {
+                this.setState({
+                    attendanceRequired: (<p>Attendance: <strong>Mandatory</strong></p>)
+                })
+            } else {
+                this.setState({
+                    attendanceRequired: (<p>Attendance: <strong>Not Mandatory</strong></p>)
+                })
+            }
+        }
+        
+        if (typeof this.props.review.grade != "undefined") {
+            this.setState({
+                grade: (<p>Grade: <strong>{this.props.review.grade}</strong></p>)
+            })
+        }
+
+        if (typeof this.props.review.tags != "undefined") {
+            this.setState({
+                tags: this.props.review.tags
+            })
+        }
+        
         app.firestore().collection("/professors").doc(this.props.review.profID).get()
             .then((prof) => {
                 this.setState({prof: prof.data(), render: true})
@@ -25,48 +76,54 @@ class ReviewCard extends Component {
     }
 
     render() {
-        console.log(this.state)
         return (
-        !this.state.render
-        ?<Spinner animation="border" role="status" />
-        :<Card style={{backgroundColor: "#13294B"}}>
-            <Card.Title>Professor {this.state.prof.first} {this.state.prof.last}</Card.Title>
-            <Card.Body>
-                <div className="ratings" style={{columnCount: 1}}>
-                    <div>
-                        <Figure>
-                            <Figure.Caption style={{color: "#ffffff", textAlign: "left", fontSize: "80%"}}>Quality</Figure.Caption>
-                            <Figure.Image
-                                width={50}
-                                height={50}
-                                alt=""
-                                src={blue}
-                                style={{marginTop: "5px"}}
-                            />
-                            <span className="rating" style={{position: "relative", left: "-50%", fontSize: "22px", fontWeight: "bold"}}>{this.props.review.rating}.0</span>
-                        </Figure>
+            !this.state.render
+            ?<Spinner animation="border" role="status" />
+            :<Card style={{backgroundColor: "#13294B"}}>
+                <Card.Title style={{color: "#fff", fontSize: "24px", margin: "20px 20px", display: "flex", justifyContent: "space-between"}}>
+                    <div>Professor: {this.state.prof.first} {this.state.prof.last}</div>
+                    <div style={{textAling: "left", fontSize: "24px"}}>{this.props.review.courseCode}</div>
+                    <div style={{fontSize: "24px"}}>{this.props.review.lastUpdatedPretty}</div>
+                </Card.Title>
+                <Card.Body>
+                    <div className="reviewBody" style={{columnCount: 2}}>
+                        <div className="figures" style={{width: "50px"}}>
+                            <Figure>
+                                <Figure.Caption style={{color: "#ffffff", textAlign: "left", fontSize: "80%", marginLeft: "5px"}}>Quality</Figure.Caption>
+                                <Figure.Image
+                                    width={50}
+                                    height={50}
+                                    alt=""
+                                    src={blue}
+                                    style={{marginTop: "5px"}}
+                                />
+                                <span className="rating" style={{position: "relative", top: "-51px", left: "8px", fontSize: "22px", fontWeight: "bold"}}>{this.props.review.rating}.0</span>
+                                <Figure.Caption style={{color: "#ffffff", fontSize: "80%"}}>Difficulty</Figure.Caption>
+                                <Figure.Image
+                                    width={50}
+                                    height={50}
+                                    alt=""
+                                    src={white}
+                                    style={{marginTop: "5px"}}
+                                />
+                                <span className="rating" style={{position: "relative", top: "-51px", left: "8px", fontSize: "22px", fontWeight: "bold"}}>{this.props.review.difficulty}.0</span>
+                            </Figure>
+                        </div>
+                        <div className="contentContainer" style={{color: "#fff", marginLeft: "-400px"}}>
+                            <div className="conds" style={{display: "flex", justifyContent: "space-between"}}>
+                                {this.props.review.takeAgain}
+                                {this.props.review.useTextbook}
+                                {this.props.review.attendance}
+                                {this.props.review.grade}
+                            </div>
+                            <div className="specifics">{this.props.review.specifics}</div>
+                            <div className="tags">
+                                {this.state.tags.map((tag) => <p>{tag}</p>)}
+                            </div>
+                        </div>
                     </div>
-                    
-                    <div>
-                        <Figure>
-                            <Figure.Caption style={{color: "#ffffff", fontSize: "80%"}}>Difficulty</Figure.Caption>
-                            <Figure.Image
-                                width={50}
-                                height={50}
-                                alt=""
-                                src={white}
-                                style={{marginTop: "5px"}}
-                            />
-                            <span className="rating" style={{position: "relative", left: "-50%", fontSize: "22px", fontWeight: "bold"}}>{this.props.review.difficulty}.0</span>
-                        </Figure>
-                    </div>
-                </div>
-
-                <div className="content">
-
-                </div>
-            </Card.Body>
-        </Card>)
+                </Card.Body>
+            </Card>)
     }
 }
 

@@ -69,7 +69,7 @@ class SubmitForm extends Component {
                     rating: this.state.rating,
                     difficulty: this.state.difficulty,
                     takeAgain: this.state.takeAgain,
-                    useTexbook: this.state.useTextbook,
+                    useTextbook: this.state.useTextbook,
                     specifics: this.state.specifics
                 }
                 
@@ -77,11 +77,11 @@ class SubmitForm extends Component {
                     review.attendance = this.state.attendance
                 }
     
-                if (!!review.grade) {
+                if (typeof review.grade != "undefined") {
                     review.grade = this.state.grade
                 }
         
-                if (!!review.tags) {
+                if (typeof review.tags != "undefined") {
                     review.tags = this.state.tags
                 }
     

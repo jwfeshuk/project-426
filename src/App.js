@@ -6,6 +6,7 @@ import Header from './components/Header';
 import Login from './components/Login';
 import Register from './components/Register';
 import Logout from './components/Logout';
+import Profile from './components/Profile';
 import SubmitReview from './components/SubmitReview';
 import RecentReviews from './components/RecentReviews';
 import Top3Prof from './components/Top3Prof';
@@ -62,7 +63,7 @@ class App extends Component {
         console.log(error);
     })
 
-    app.firestore().collection("/reviews").orderBy('lastUpdated').limit(3).get()
+    app.firestore().collection("/reviews").orderBy('lastUpdated', 'desc').limit(3).get()
         .then((reviews) => {
             let temp = []
             reviews.forEach((review) => {
@@ -93,7 +94,7 @@ class App extends Component {
       <div style={{ maxWidth: "1160px", margin: "0 auto" }}>
         <BrowserRouter>
           <div>
-            <Header authenticated={this.state.authenticated} />
+            <Header authenticated={this.state.authenticated} options={this.state.options}/>
             <div className="main-content" style={{ padding: "1em" }}>
               <div className="workspace">
                 <Route exact path="/login" component={Login} />

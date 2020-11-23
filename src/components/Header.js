@@ -3,12 +3,55 @@ import { Link } from 'react-router-dom';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Navbar, Nav } from 'react-bootstrap';
-import { Form, FormControl } from 'react-bootstrap';
+import { Form, FormControl, ListGroup, Button} from 'react-bootstrap';
+import {debounce} from 'throttle-debounce';
 
 import './Header.css';
 
 class Header extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            query: "",
+            _searches: [],
+            searchResults: []
+        }
+
+        this.autocompleteDebounced = debounce(250, this.autocompleteSearch)
+    }
+
+    changeQuery = event => {
+        this.setState({query: event.target.value}, () => {
+            this.autocompleteDebounced(this.state.query)
+        })
+    }
+
+    autocompleteSearch = q => {
+        this._fetch(q);
+    }
+
+    _fetch = q => {
+        if (this.props.options === undefined) {
+        } else{
+            this.setState({searchResults: []})
+            for (let i = 0; i < this.props.options.length; i++) {
+                if (this.props.options[i].display.toLowerCase().includes(q) && q != "") {
+                    this.state.searchResults.push(this.props.options[i])
+                }
+            }
+            this.setState({ _searches: this.state.searchResults });
+        }
+    };
+
+    mapSearches(_searches) {
+        let searchresult = _searches.map((s, i) => {
+            return <Button key={i} href="/search">{s.display}</Button>
+        })
+        return searchresult;
+    }
+
     render() {
+        const _searches = this.state._searches
         return (
             <Navbar style={{backgroundColor: "#13294B"}}>
                 <Navbar.Brand href="/" style={{color: "#ffffff"}}>RateUNC</Navbar.Brand>
@@ -18,8 +61,10 @@ class Header extends Component {
                         {this.props.authenticated
                             ?
                             <Form inline style={{ width: "90%" }}>
-                                <FormControl style={{ width: "100%" }} variant="outline-light" type="text" placeholder="Search Professors..." className="mr-sm-2" />
-                                {/* <Button variant="outline-light">Search</Button> */}
+                                <FormControl style={{ width: "100%" }} variant="outline-light" type="text" placeholder="Search Professors..." className="mr-sm-2" value={this.state.query} onChange={this.changeQuery} />
+                                <ListGroup>
+                                    {this.mapSearches(_searches)}
+                                </ListGroup>
                             </Form>
                             :
                             <Form inline style={{ width: "90%" }}>
