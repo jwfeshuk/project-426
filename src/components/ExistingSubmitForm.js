@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Card, Button, Form, Col } from 'react-bootstrap';
 import { app } from '../base';
+import SearchProfs from "./SearchProfs"
 
 class ExistingSubmitForm extends Component {
     constructor(props) {
@@ -83,14 +84,11 @@ class ExistingSubmitForm extends Component {
                         <Form.Row>
                             <Form.Group as={Col} controlId="formProfFirst">
                                 <Form.Label>Professor</Form.Label>
-                                <Form.Control as="select" defaultValue="Choose a Professor" onChange={e => this.setState({ profID: e.target.value })}>
-                                    <option>Choose a Professor</option>
-                                    {this.createSelectItems()}
-                                </Form.Control>
+                                <SearchProfs />
                             </Form.Group>
                             <Form.Group as={Col} controlId="formCourseCode">
                                 <Form.Label>Course Code</Form.Label>
-                                <Form.Control type="name" placeholder="e.g. COMP 426" onChange={e => this.setState({ courseCode: e.target.value })} />
+                                <Form.Control style={{height: "53px"}}type="name" placeholder="e.g. COMP 426" onChange={e => this.setState({ courseCode: e.target.value })} />
                             </Form.Group>
                         </Form.Row>
                         <Form.Row>

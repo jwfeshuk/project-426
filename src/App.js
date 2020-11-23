@@ -1,4 +1,4 @@
-import React, {UseEffect, UseState, Component } from 'react';
+import React, { UseEffect, UseState, Component } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 // import { Spinner } from '@blueprintjs/core';
 import Header from './components/Header';
@@ -28,7 +28,6 @@ class App extends Component {
     this.state = {
       authenticated: false,
       loading: true,
-      options: []
     };
   }
 
@@ -47,6 +46,9 @@ class App extends Component {
       }
     })
 
+  }
+
+  componentDidMount() {
     app.firestore().collection("/professors").get()
       .then((profs) => {
         let temp = [];
@@ -59,23 +61,23 @@ class App extends Component {
             display: professor.first + " " + professor.last
           })
         })
-        this.setState({options: temp})
+        this.setState({ options: temp })
       })
       .catch((error) => {
         console.log(error);
-    })
+      })
 
     app.firestore().collection("/reviews").orderBy('lastUpdated', 'desc').limit(3).get()
-        .then((reviews) => {
-            let temp = []
-            reviews.forEach((review) => {
-                let recent = review.data()
-                temp.push(recent)
-            })
-            this.setState({recents: temp})
-        }).catch((error) => {
-            console.log(error)
+      .then((reviews) => {
+        let temp = []
+        reviews.forEach((review) => {
+          let recent = review.data()
+          temp.push(recent)
         })
+        this.setState({ recents: temp })
+      }).catch((error) => {
+        console.log(error)
+      })
   }
 
   componentWillUnmount() {
@@ -96,7 +98,7 @@ class App extends Component {
       <div style={{ maxWidth: "1160px", margin: "0 auto" }}>
         <BrowserRouter>
           <div>
-            <Header authenticated={this.state.authenticated} options={this.state.options}/>
+            <Header authenticated={this.state.authenticated} />
             <div id="main-content" style={{ padding: "1em" }}>
               <div className="workspace">
                 <Route exact path="/login" component={Login} />
@@ -111,11 +113,11 @@ class App extends Component {
                 />
                 <Route exact path="/SubmitForm" component={SubmitForm} />
                 <Route exact path="/ExistingSubmitForm" render={() => (
-                  <ExistingSubmitForm profs={this.state.options} />
+                  <ExistingSubmitForm />
                 )} />
                 <Route exact path="/About" component={About} />
                 <Route exact path="/" render={() => (
-                  <RecentReviews recents={this.state.recents}/>
+                  <RecentReviews recents={this.state.recents} />
                 )} />
                 {/*<Container>
                   <Row>

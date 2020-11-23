@@ -31,3 +31,7 @@
 #main-content {
   background-color: #DDD;
 }
+
+.form-group {
+  border: 1px solid tomato;
+}

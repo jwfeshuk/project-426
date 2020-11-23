@@ -23,44 +23,6 @@ class ReviewCard extends Component {
     }
     
     componentWillMount() {
-        if (this.props.review.takeAgain) {
-            this.setState({
-                takeAgain: (<p>Would Take Again: <strong>Yes</strong></p>) 
-            })
-        } else {
-            this.setState({
-                takeAgain: (<p>Would Take Again: <strong>No</strong></p>)
-            })
-        }
-
-        if (this.props.review.useTextbook) {
-            this.setState({
-                useTextbook: (<p>Textbook: <strong>Yes</strong></p>) 
-            })
-        } else {
-            this.setState({
-                useTextbook: (<p>Textbook: <strong>No</strong></p>)
-            })
-        }
-
-        if (typeof this.props.review.attendance != "undefined") {
-             if (this.props.review.attendance) {
-                this.setState({
-                    attendanceRequired: (<p>Attendance: <strong>Mandatory</strong></p>)
-                })
-            } else {
-                this.setState({
-                    attendanceRequired: (<p>Attendance: <strong>Not Mandatory</strong></p>)
-                })
-            }
-        }
-        
-        if (typeof this.props.review.grade != "undefined") {
-            this.setState({
-                grade: (<p>Grade: <strong>{this.props.review.grade}</strong></p>)
-            })
-        }
-
         if (typeof this.props.review.tags != "undefined") {
             this.setState({
                 tags: this.props.review.tags
