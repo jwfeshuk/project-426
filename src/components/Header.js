@@ -10,9 +10,8 @@ import './Header.css';
 class Header extends Component {
     render() {
         return (
-
-            <Navbar bg="dark" variant="dark">
-                <Navbar.Brand href="/">RateUNC</Navbar.Brand>
+            <Navbar style={{backgroundColor: "#13294B"}}>
+                <Navbar.Brand href="/" style={{color: "#ffffff"}}>RateUNC</Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav style={{ width: "100%", display: 'flex', alignItems: 'center', justifyContent: 'center', }}>
@@ -30,14 +29,14 @@ class Header extends Component {
                         }
                     </Nav>
                     <Nav className="ml-auto">
-                        <Nav.Link href="#about">About</Nav.Link>
+                        <Nav.Link href="#about" style={{color: "#ffffff"}}>About</Nav.Link>
                         {this.props.authenticated
                             ?
-                            <Nav.Link href="/logout">Logout</Nav.Link>
+                            <Nav.Link href="/logout" style={{color: "#ffffff"}}>Logout</Nav.Link>
                             :
                             <>
-                            <Nav.Link className="text-nowrap" href="/login">Login</Nav.Link>
-                            <Nav.Link className="text-nowrap" href="/register">Register</Nav.Link>
+                            <Nav.Link className="text-nowrap" href="/login" style={{color: "#ffffff"}}>Login</Nav.Link>
+                            <Nav.Link className="text-nowrap" href="/register" style={{color: "#ffffff"}}>Register</Nav.Link>
                             </>
                         }
                     </Nav>

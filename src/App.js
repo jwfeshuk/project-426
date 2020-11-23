@@ -7,6 +7,9 @@ import Login from './components/Login';
 import Register from './components/Register';
 import Logout from './components/Logout';
 import SubmitReview from './components/SubmitReview';
+import RecentReviews from './components/RecentReviews';
+import Top3Prof from './components/Top3Prof';
+import EditForm from './components/EditForm';
 // import ChordEditor from './components/ChordEditor';
 // import SongList from './components/SongList';
 import { app, base } from './base';
@@ -95,10 +98,18 @@ class App extends Component {
                   <SubmitReview authenticated={this.state.authenticated} />
                   )}
                 />
+                <Route exact path="/EditForm" component={EditForm}/>
                 <Container>
                   <Row>
-                    <Col></Col>
-                    <Col></Col>
+                    <Col><Route exact path="/" component={RecentReviews} /></Col>
+                    <Col>
+                      <Container>
+                        <Row><Route exact path="/" render={() => (
+                          <Top3Prof rating="true" />
+                        )} /></Row>
+                        <Row><Route exact path="/" component={Top3Prof} /></Row>
+                      </Container>
+                    </Col>
                   </Row>
                 </Container>
                 {/* <Route exact path="/songs" render={(props) => {
