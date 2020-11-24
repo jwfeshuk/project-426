@@ -25,11 +25,63 @@ class ExistingSubmitForm extends Component {
         this.onChange = this.onChange.bind(this);
     }
 
+    // onSubmit(e) {
+    //     e.preventDefault();
+        
+    //     if (typeof this.state.profID != "undefined" && typeof this.state.courseCode != "undefined" && this.state.rating != 0 && this.state.difficulty != 0
+    //         && typeof this.state.takeAgain != "undefined" && typeof this.state.useTextbook != "undefined" && typeof this.state.specifics!= "undefined") {
+    //         let review = {
+    //             profID: this.state.profID,
+    //             courseCode: this.state.courseCode,
+    //             rating: this.state.rating,
+    //             difficulty: this.state.difficulty,
+    //             takeAgain: this.state.takeAgain,
+    //             useTextbook: this.state.useTextbook,
+    //             specifics: this.state.specifics
+    //         }
+
+    //         if (typeof this.state.attendance != "undefined") {
+    //             review.attendance = this.state.attendance
+    //         }
+
+    //         if (typeof this.state.grade != "undefined") {
+    //             review.grade = this.state.grade
+    //         }
+
+    //         if (typeof this.state.tags != "undefined") {
+    //             review.tags = this.state.tags
+    //         }
+
+    //         let today = new Date()
+    //         review.lastUpdated = today.getTime()
+    //         review.lastUpdatedPretty = (today.getMonth() + 1) + '/' + today.getDate() + '/' + today.getFullYear()
+    //         review.userID = app.auth().currentUser.uid;
+
+    //         let newReviewRef = app.firestore().collection("/reviews").doc()
+
+    //         review.reviewID = newReviewRef.id
+            
+    //         newReviewRef.set(review)
+
+
+
+
+    //         // alert(newReviewRef);
+
+    //         // console.log(newReviewRef)
+    //         // console.log(review)
+
+    //         window.location.href = "/"
+    //     } else {
+    //         alert("You didn't finish the form! Please go back and finish.")
+    //     }
+    // }
+
+
     onSubmit(e) {
         e.preventDefault();
-        
-        if (typeof this.state.profID != "undefined" && typeof this.state.courseCode != "undefined" && this.state.rating != 0 && this.state.difficulty != 0
-            && typeof this.state.takeAgain != "undefined" && typeof this.state.useTextbook != "undefined" && typeof this.state.specifics!= "undefined") {
+        if (!!this.state.profID && !!this.state.courseCode && this.state.rating != 0 && this.state.difficulty != 0
+            && !!this.state.takeAgain && !!this.state.useTextbook && !!this.state.specifics) {
             let review = {
                 profID: this.state.profID,
                 courseCode: this.state.courseCode,
@@ -40,7 +92,7 @@ class ExistingSubmitForm extends Component {
                 specifics: this.state.specifics
             }
 
-            if (typeof this.state.attendance != "undefined") {
+            if (!!this.state.attendance) {
                 review.attendance = this.state.attendance
             }
 
@@ -52,27 +104,32 @@ class ExistingSubmitForm extends Component {
                 review.tags = this.state.tags
             }
 
+            let reviewCol = app.firestore().collection("/reviews")
+
             let today = new Date()
             review.lastUpdated = today.getTime()
             review.lastUpdatedPretty = (today.getMonth() + 1) + '/' + today.getDate() + '/' + today.getFullYear()
             review.userID = app.auth().currentUser.uid;
 
-            let newReviewRef = app.firestore().collection("/reviews").doc()
+            reviewCol.add(review)
+            .then((reviewRef) => {
+                review.reviewID = reviewRef.id
 
-            review.reviewID = newReviewRef.id
-            
-            newReviewRef.set(review)
+                reviewCol.doc(reviewRef.id).update({
+                    reviewID: reviewRef.id,
+                    userID: app.auth().currentUser.uid
+                })
+                window.location.href = "/"
+            }).catch((error) => {
+                console.log(error);
+            })
 
-            // alert(newReviewRef);
-
-            // console.log(newReviewRef)
-            // console.log(review)
-
-            window.location.href = "/"
         } else {
             alert("You didn't finish the form! Please go back and finish.")
         }
     }
+
+
 
     onChange = prof => {
         this.setState({profID: prof.value})
