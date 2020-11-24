@@ -51,7 +51,8 @@ class ReviewCard extends Component {
     confirm() {
         this.setState({confirm: false})
         
-        app.firestore().collections("/reviews").doc(this.props.review.reviewID).delete()
+        app.firestore().collection("/reviews").doc(this.props.review.reviewID).delete()
+        window.location.reload()
     }
     
     render() {
@@ -102,7 +103,7 @@ class ReviewCard extends Component {
                                     {(this.props.review.userID == app.auth().currentUser.uid)
                                         ?<div><Button onClick={this.edit} style={{marginBottom: "5px", marginRight: "5px", backgroundColor: "#97c0e6", borderColor: "#97c0e6", color: "#13294B"}}>Edit</Button>
                                         {(this.state.confirm)
-                                            ?<Button onClick={this.confirm} style={{marginRight: "5px", backgroundColor: "#97c0e6", borderColor: "#97c0e6", color: "#13294B"}}>Confirm Delete?</Button>
+                                            ?<Button onClick={this.confirm} style={{marginRight: "5px", backgroundColor: "#800000", borderColor: "#800000", color: "#13294B"}}>Confirm</Button>
                                             :<Button onClick={this.delete} style={{marginRight: "5px", backgroundColor: "#97c0e6", borderColor: "#97c0e6", color: "#13294B"}}>Delete</Button>
                                         }</div>
                                     : null}

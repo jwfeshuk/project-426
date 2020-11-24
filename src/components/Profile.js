@@ -39,12 +39,16 @@ class Profile extends Component {
     newPassword() {
         this.setState({isClicked: false})
         
-        if (this.state.newPass == this.state.confirmPass) {
+        if (this.state.newPass == this.state.confirmPass && this.state.newPass.length > 5) {
+            app.auth().currentUser.updatePassword(this.state.newPass)
+            
             app.firestore().collection("/users").doc(this.state.user.uid).update({
                 password: this.state.newPass
             }).then((thisIsUseless) => this.setState({success: true, failure: false}))
-             .then((useless) => app.auth().currentUser.updatePassword(this.state.newPass))
         } else {
+            if (this.state.newPass.length <= 5) {
+                alert("Your password must be at least six characters! Please try again.")
+            }
             this.setState({failure: true, success: false})
         }
     }
@@ -59,7 +63,7 @@ class Profile extends Component {
                     {(this.state.isClicked)
                         ?<Form style={{width: "50%", marginLeft: "25%"}}>
                             <Form.Group>
-                                <Form.Label>New Password</Form.Label>
+                                <Form.Label>New Password (must be at least 6 characters)</Form.Label>
                                 <Form.Control type="password" onChange={e => this.setState({ newPass: e.target.value })}></Form.Control>
                             </Form.Group>
                             <Form.Group>

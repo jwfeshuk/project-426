@@ -47,6 +47,9 @@ class EditForm extends Component {
 
     onSubmit(e) {
         e.preventDefault();
+        
+        let reviewCol = app.firestore().collection("/reviews")
+        
         if (!!this.state.courseCode && this.state.rating != 0 && this.state.difficulty != 0 && !!this.state.takeAgain
             && !!this.state.useTextbook && !!this.state.specifics) {
             
@@ -56,7 +59,7 @@ class EditForm extends Component {
                 lastUpdatedPretty: (today.getMonth() + 1) + '/' + today.getDate() + '/' + today.getFullYear()
             })
 
-            app.firestore().collection("/reviews").doc(this.props.review.reviewID).update({
+            reviewCol.doc(this.props.review.reviewID).update({
                 profID: this.state.profID,
                 userID: this.state.userID,
                 lastUpdated: this.state.lastUpdated,
@@ -66,14 +69,22 @@ class EditForm extends Component {
                 difficulty: this.state.difficulty,
                 takeAgain: this.state.takeAgain,
                 useTextbook: this.state.useTextbook,
-                attendance: this.state.attendance,
-                grade: this.state.grade,
-                tags: this.state.tags,
                 specifics: this.state.specifics
+            }).then(() => {
+                if (typeof this.state.attendance != "undefined") {
+                    reviewCol.doc(this.props.review.reviewID).update({attendance: this.state.attendance})
+                }
+            }).then(() => {
+                if (typeof this.state.grade != "undefined") {
+                    reviewCol.doc(this.props.review.reviewID).update({grade: this.state.grade})
+                }
+            }).then(() => {
+                if (typeof this.state.tags != "undefined") {
+                    reviewCol.doc(this.props.review.reviewID).update({tags: this.state.tags})
+                }
             }).then(() => {
                 window.location.reload()
             })
-
         } else {
             alert("Something went wrong! Make sure the form is filled out!")
         }
