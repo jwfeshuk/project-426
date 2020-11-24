@@ -35,7 +35,7 @@ class Login extends Component {
             .then((user) => {
                 if (user && user.user.email) {
                     this.loginForm.reset()
-                    this.setState({ redirect: true })
+                    window.location.href = "/"
                 }
             })
             .catch((error) => {
@@ -45,9 +45,6 @@ class Login extends Component {
     }
 
     render() {
-        if (this.state.redirect === true) {
-            return <Redirect to='/' />
-        }
 
         return (
 
