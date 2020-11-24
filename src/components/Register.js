@@ -26,6 +26,16 @@ class Register extends Component {
     const email = this.emailInput.value
     const password = this.passwordInput.value
 
+    if (email == "" && password == "") {
+      alert('Please enter your email and password.')
+    } else if (email == "") {
+      alert('Please enter your email.')
+    } else if (!/unc.edu/.test(email)) {
+      alert('Please use a valid UNC email using ".unc.edu"');
+    } else if (password == "") {
+      alert('Please enter your password.')
+    }
+
     app.auth().createUserWithEmailAndPassword(email, password)
       .then((user) => {
         //registered

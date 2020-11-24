@@ -53,25 +53,7 @@ class Header extends Component {
         // console.log(this.state.redirectedPath)
 
         if (this.state.redirectedPath) {
-            // return (<Redirect push to={{
-            //     pathname: this.state.redirectedPath
-            //     // pathname: '/'
-            //     // state: { results: this.state.results }
-            // }} />);
-
-            // return (<Redirect to={{
-            //     pathname: this.state.redirectedPath
-            //     // pathname: '/'
-            //     // state: { results: this.state.results }
-            // }} />);
-
             window.location.href = this.state.redirectedPath;
-
-            // setTimeout(function () { window.location.reload() }, .001);
-            // return (<Redirect to={{
-            //     pathname: this.state.redirectedPath
-            // }} />);
-
         }
 
         const searches = this.state.searches || []

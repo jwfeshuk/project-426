@@ -44,9 +44,11 @@ class MyReviews extends Component {
                     {(!this.state.render)
                         ? <Spinner animation="border" role="status" />
                         : (typeof this.state.reviews != "undefined")
-                            ? this.state.reviews.map((review) => {
+                            ? this.state.reviews.map((r) => {
+                                {/* alert(r) */}
+                                {/* console.log(r) */}
                                 return (<ListGroup.Item style={{ backgroundColor: "#97c0e6" }}>
-                                    <ReviewCard review={review}></ReviewCard>
+                                    <ReviewCard review={r}></ReviewCard>
                                 </ListGroup.Item>)
                               }) 
                             : (<ListGroup.Item style={{ backgroundColor: "#97c0e6" }}>You have no reviews.</ListGroup.Item>)
