@@ -17,8 +17,8 @@ const config = {
     projectId: "comp426-final-25d9a",
     storageBucket: "comp426-final-25d9a.appspot.com",
     messagingSenderId: "60674146911",
-    appId: "1:60674146911:web:6ca9a04b4fd21f0bc591ea",
-    measurementId: "G-T118GDGHTD"
+    appId: "1:60674146911:web:30cb2eb56d4facdfc591ea",
+    measurementId: "G-38FFJ6LRHF"
 };
 
 const app = firebase.initializeApp(config)
