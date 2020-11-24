@@ -98,9 +98,20 @@ class App extends Component {
       <div style={{ maxWidth: "1160px", margin: "0 auto" }}>
         <BrowserRouter>
           <div>
-            <Header authenticated={this.state.authenticated} />
+          {/* <Header authenticated={this.state.authenticated} /> */}
             <div id="main-content" style={{ padding: "1em" }}>
               <div className="workspace">
+
+                
+                <Header authenticated={this.state.authenticated} />
+
+                {/* <Route exact path='' component={Header} /> */}
+
+                {/* <Route exact path="/" render={() => (
+                  <Header authenticated={this.state.authenticated} />
+                 )}/> */}
+
+
                 <Route exact path="/login" component={Login} />
                 <Route exact path="/register" component={Register} />
                 <Route exact path="/logout" component={Logout} />

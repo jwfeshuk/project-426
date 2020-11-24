@@ -17,7 +17,7 @@ class ExistingSubmitForm extends Component {
             attendance: null,
             grade: "",
             tags: [],
-            specifics: "",
+            specifics: ""
         }
 
         this.onSubmit = this.onSubmit.bind(this);
@@ -30,6 +30,7 @@ class ExistingSubmitForm extends Component {
 
     onSubmit(e) {
         e.preventDefault();
+        
         if (!!this.state.profID && !!this.state.courseCode && this.state.rating != 0 && this.state.difficulty != 0
             && !!this.state.takeAgain && !!this.state.useTextbook && !!this.state.specifics) {
             let review = {
@@ -103,7 +104,7 @@ class ExistingSubmitForm extends Component {
                         <Form.Row>
                             <Form.Group as={Col} controlId="formProfFirst">
                                 <Form.Label>Professor</Form.Label>
-                                <SearchProfs />
+                                <SearchProfs onInputChange={(e, v) => this.setState({ profID: v })} onChange={e => this.setState({ profID: e.target.value })}/>
                             </Form.Group>
                             <Form.Group as={Col} controlId="formCourseCode">
                                 <Form.Label>Course Code</Form.Label>

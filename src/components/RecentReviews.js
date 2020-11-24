@@ -7,7 +7,7 @@ import ReviewCard from './ReviewCard'
 class RecentReviews extends Component {
     render() {
         return(
-            <Card>
+            <Card style={{marginTop: "8px"}}>
                 <Card.Header className="text-center" style={{backgroundColor: "#13294B", color: "#ffffff", fontSize: "28px"}}>Recent Reviews</Card.Header>
                 <ListGroup variant="flush">
                     <ListGroup.Item style={{backgroundColor: "#97c0e6"}}>{(typeof this.props.recents == "undefined")

@@ -18,48 +18,47 @@ class Header extends Component {
         super(props);
 
         this.state = {
-            professors: []
+            selectedOption: {},
+            redirectedPath: undefined
         }
 
         this.autocompleteSearchDebounced = debounce(500, this.autocompleteSearch);
 
         this.handleSubmit = this.handleSubmit.bind(this)
-        // this.handleKeyDown = this.handleKeyDown.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
 
     handleSubmit(event) {
         event.preventDefault();
-        // alert('SEARCH');
-        return <Redirect to='/professors/' />
+        console.log('Submit');
+        // if (!this.state.selectedOption) {
+        //     return;
+        // } else {
+        //     console.log(this.state.selectedOption.value);
+        //     let path = this.state.selectedOption.value;
+        //     return <Redirect to='/professors/' />
+        // }
+
+        this.setState({redirectedPath: "/professor/" + this.state.selectedOption.value});
+
     }
 
-    // handleKeyDown(event) {
-    //     alert('Search');
-    //     event.preventDefault();
-    // }
-
-    componentDidMount() {
-        let logDB = async function (db) {
-            app.firestore().collection("/professors").get()
-                .then((profs) => {
-                    let temp = [];
-                    profs.forEach((prof) => {
-                        let professor = prof.data()
-                        temp.push({
-                            name: professor.first + professor.last,
-                            alpha2Code: professor.profID,
-                        })
-                    })
-                    db.setState({ professors: temp })
-                })
-                .catch((error) => {
-                    console.log(error);
-                })
-        }
-        logDB(this);
-    }
+    handleChange = selectedOption => {
+        this.setState({ selectedOption });
+        console.log(`Option selected:`, selectedOption);
+    };
 
     render() {
+
+        console.log(this.state.redirectedPath)
+
+        if (this.state.redirectedPath) {
+            return (<Redirect to={{
+                pathname: this.state.redirectedPath
+                // state: { results: this.state.results }
+            }} />);
+        }
+
         const searches = this.state.searches || []
         return (
             <Navbar style={{ backgroundColor: "#13294B", zIndex: "999" }}>
@@ -73,14 +72,14 @@ class Header extends Component {
                                 {/* <AutoCompleteProf style={{ width: "90%" }} onKeyDown={this.handleKeyDown} /> */}
                                 {/* <AutoCompleteProf style={{ width: "90%" }} onSubmit={this.handleSubmit} /> */}
                                 <Form inline style={{ width: "90%" }} onSubmit={this.handleSubmit}>
-                                    <AutoCompleteProf style={{ width: "90%" }} />
+                                    <AutoCompleteProf style={{ width: "90%" }} onChange={this.handleChange} />
                                 </Form>
                             </>
 
                             :
                             <Form inline style={{ width: "90%" }}>
                                 <FormControl style={{ width: "100%" }} variant="outline-light" type="text" placeholder="Login to Search Professors..." className="mr-sm-2" readOnly />
-                                {/* <Button variant="outline-light">Search</Button> */}
+                                 {/* <Button variant="outline-light">Search</Button> */}
                             </Form>
                         }
                     </Nav>
