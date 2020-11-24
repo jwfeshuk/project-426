@@ -25,11 +25,6 @@ class ExistingSubmitForm extends Component {
         this.onChange = this.onChange.bind(this);
     }
 
-    createSelectItems() {
-        let items = this.props.profs.map((prof, i) => <option key={i} value={prof.id}>{prof.display}</option>)
-        return items
-    }
-
     onSubmit(e) {
         e.preventDefault();
         
@@ -57,38 +52,18 @@ class ExistingSubmitForm extends Component {
                 review.tags = this.state.tags
             }
 
-            let reviewCol = app.firestore().collection("/reviews")
-
             let today = new Date()
             review.lastUpdated = today.getTime()
             review.lastUpdatedPretty = (today.getMonth() + 1) + '/' + today.getDate() + '/' + today.getFullYear()
             review.userID = app.auth().currentUser.uid;
 
-            reviewCol.add(review)
-            .then((reviewRef) => {
-                review.reviewID = reviewRef.id
+            let newReviewRef = app.firestore().collection("/reviews").doc()
 
-                reviewCol.doc(reviewRef.id).update({
-                    reviewID: reviewRef.id,
-                    userID: app.auth().currentUser.uid
-                })
+            review.reviewID = newReviewRef.id
+            
+            newReviewRef.set(review)
 
-            }).catch((error) => {
-                console.log(error);
-            })
-
-            let userCol = app.firestore().collection("/users")
-
-            userCol.doc(review.userID).get()
-                .then((user) => user.data())
-                .then((data) => {
-                    data.reviews.push(review.reviewID);
-                    userCol.doc(review.userID).update({reviews: data.reviews})
-                }).catch((error) => {
-                    console.log(error);
-                })
-                
-                window.location.href = "/"
+            window.location.href = "/"
         } else {
             alert("You didn't finish the form! Please go back and finish.")
         }
@@ -96,8 +71,6 @@ class ExistingSubmitForm extends Component {
 
     onChange = prof => {
         this.setState({profID: prof.value})
-        console.log(prof)
-        console.log(this.state)
     }
 
     render() {
@@ -109,11 +82,11 @@ class ExistingSubmitForm extends Component {
                         <Form.Row>
                             <Form.Group as={Col} controlId="formProfFirst">
                                 <Form.Label>Professor</Form.Label>
-                                <AutoCompleteProf onChange={this.onChange}/>
+                                <AutoCompleteProf onChange={this.onChange} prof={this.props.prof}/>
                                 </Form.Group>
                             <Form.Group as={Col} controlId="formCourseCode">
                                 <Form.Label>Course Code</Form.Label>
-                                <Form.Control style={{ height: "53px" }} type="name" placeholder="e.g. COMP 426" onChange={e => this.setState({ courseCode: e.target.value })} />
+                                <Form.Control type="name" placeholder="e.g. COMP 426" onChange={e => this.setState({ courseCode: e.target.value })} />
                             </Form.Group>
                         </Form.Row>
                         <hr style={{ marginTop: "0", marginBottom: "10px" }} />

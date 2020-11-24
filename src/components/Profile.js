@@ -53,7 +53,7 @@ class Profile extends Component {
         return (
             (!this.props.authenticated)
             ?<Redirect to='/' />
-            :<Card>
+            :<div><Card>
                 <Card.Title style={{textAlign: "center", fontSize: "36px", marginTop: "15px"}}>Your Profile<br/><span style={{fontSize: "20px"}}>({this.state.user.email})</span></Card.Title>
                 <Card.Body style={{textAlign: "center"}}>
                     {(this.state.isClicked)
@@ -71,20 +71,17 @@ class Profile extends Component {
                         : (this.state.success)
                             ? <div><Button onClick={this.onClick} variant="secondary" style={{backgroundColor: "#13294B"}}>Edit your Profile</Button><div style={{color: "#00FF00"}}>Sucessfully Changed!</div> </div>
                             : (this.state.failure)
-                                ? <div><Button onClick={this.onClick} variant="secondary" style={{backgroundColor: "#13294B"}}>Edit your Profile</Button><div style={{color: "#FF0000"}}>An Error has Occurred, please try again.</div> </div>
+                                ? <div><Button onClick={this.onClick} variant="secondary" style={{backgroundColor: "#13294B"}}>Edit your Profile</Button><div style={{color: "#FF0000"}}>An Error has occurred, please try again.</div> </div>
                                 :<Button onClick={this.onClick} variant="secondary" style={{backgroundColor: "#13294B"}}>Edit your Profile</Button>
                     }
-                    <Card style={{marginTop: "20px"}}>
-                        <Card.Body style={{textAlign: "left"}}>
-                            {(!this.state.render)
-                            ?<Spinner animation="border" role="status" />
-                            :<MyReviews />
-                            }
-                            
-                        </Card.Body>
-                    </Card>
                 </Card.Body>
             </Card>
+            <div>
+                {(!this.state.render)
+                    ?<Spinner animation="border" role="status" />
+                    :<MyReviews />}
+            </div>
+            </div>
         )
     }
 }

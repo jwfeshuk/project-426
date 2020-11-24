@@ -44,7 +44,7 @@ class Header extends Component {
     }
 
     handleChange = selectedOption => {
-        this.setState({ selectedOption });
+        debounce (500, this.setState({ selectedOption }));
         // console.log(`Option selected:`, selectedOption);
     };
 

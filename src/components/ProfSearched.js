@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Card, Spinner, ListGroup } from 'react-bootstrap';
+import { Card, Spinner, ListGroup, Button } from 'react-bootstrap';
 import { app } from '../base';
 import ReviewCard from './ReviewCard'
+import ExistingSubmitForm from './ExistingSubmitForm'
 
 class ProfSearched extends Component {
     constructor(props) {
@@ -14,6 +15,11 @@ class ProfSearched extends Component {
             reviews: [],
             render: false
         }
+        this.onClick = this.onClick.bind(this)
+    }
+
+    onClick() {
+        this.setState({isClicked: true})
     }
 
     componentDidMount() {
@@ -37,16 +43,21 @@ class ProfSearched extends Component {
         return (
             (!this.state.render)
             ?<Spinner animation="border" role="status" />
-            :<Card>
-                <Card.Header className="text-center" style={{backgroundColor: "#13294B", color: "#ffffff", fontSize: "28px"}}>{this.state.prof.first} {this.state.prof.last}'s Reviews</Card.Header>
-                <ListGroup variant="flush">
-                    {this.state.reviews.map((review) => {
-                        return (<ListGroup.Item key={review.reviewID} style={{backgroundColor: "#97c0e6"}}>
-                                    <ReviewCard review={review}></ReviewCard>
-                                </ListGroup.Item>)
-                    })}
-                </ListGroup> 
-            </Card>
+            :(this.state.isClicked)
+                ?<ExistingSubmitForm prof={this.state.prof.first + " " + this.state.prof.last}/>
+                :<Card>
+                    <Card.Header className="text-center" style={{backgroundColor: "#13294B", color: "#ffffff", fontSize: "28px"}}>
+                        <span style={{marginLeft: "200px"}}>{this.state.prof.first} {this.state.prof.last}'s Reviews</span>
+                        <Button style={{float:"right", width:"200px"}}onClick={this.onClick}>Rate this Professor</Button>
+                    </Card.Header>
+                    <ListGroup variant="flush">
+                        {this.state.reviews.map((review) => {
+                            return (<ListGroup.Item key={review.reviewID} style={{backgroundColor: "#97c0e6"}}>
+                                        <ReviewCard review={review}></ReviewCard>
+                                    </ListGroup.Item>)
+                        })}
+                    </ListGroup> 
+                </Card>
         )
     }
 }

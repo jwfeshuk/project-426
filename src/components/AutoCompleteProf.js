@@ -62,7 +62,6 @@ class AutoCompleteProf extends React.Component {
 
     render() {
         const { selectedOption } = this.state;
-
         return (
             <div style={{ width: '100%' }}>
                 <Select

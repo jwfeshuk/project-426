@@ -37,8 +37,8 @@ class MyReviews extends Component {
 
     render() {
         return (
-            <Card>
-                <Card.Header className="text-center" style={{ backgroundColor: "#13294B", color: "#ffffff", fontSize: "28px" }}>Your Reviews</Card.Header>
+            <Card style={{marginTop: "8px"}}>
+                <Card.Header className="text-center" style={{backgroundColor: "#13294B", color: "#ffffff", fontSize: "28px"}}>Your Reviews</Card.Header>
                 <ListGroup variant="flush">
                     {/* {console.log(this.state)} */}
                     {(!this.state.render)
@@ -48,7 +48,7 @@ class MyReviews extends Component {
                                 return (<ListGroup.Item style={{ backgroundColor: "#97c0e6" }}>
                                     <ReviewCard review={review}></ReviewCard>
                                 </ListGroup.Item>)
-                              })
+                              }) 
                             : (<ListGroup.Item style={{ backgroundColor: "#97c0e6" }}>You have no reviews.</ListGroup.Item>)
                     }
                 </ListGroup>
