@@ -40,7 +40,7 @@ class MyReviews extends Component {
             <Card>
                 <Card.Header className="text-center" style={{ backgroundColor: "#13294B", color: "#ffffff", fontSize: "28px" }}>Your Reviews</Card.Header>
                 <ListGroup variant="flush">
-                    {console.log(this.state)}
+                    {/* {console.log(this.state)} */}
                     {(!this.state.render)
                         ? <Spinner animation="border" role="status" />
                         : (typeof this.state.reviews != "undefined")

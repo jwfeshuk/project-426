@@ -45,12 +45,12 @@ class Header extends Component {
 
     handleChange = selectedOption => {
         this.setState({ selectedOption });
-        console.log(`Option selected:`, selectedOption);
+        // console.log(`Option selected:`, selectedOption);
     };
 
     render() {
 
-        console.log(this.state.redirectedPath)
+        // console.log(this.state.redirectedPath)
 
         if (this.state.redirectedPath) {
             // return (<Redirect push to={{
