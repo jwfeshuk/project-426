@@ -125,7 +125,7 @@ class App extends Component {
                 )} />
                 <Route exact path="/About" component={About} />
                 <Route exact path="/" render={() => (
-                  <RecentReviews recents={this.state.recents} />
+                  <RecentReviews authenticaed={this.state.authenticated} recents={this.state.recents} />
                 )} />
                 <Route path="/professor/:id" component={ProfSearched} />
                 {/*<Container>
