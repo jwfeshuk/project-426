@@ -12,6 +12,7 @@ import RecentReviews from './components/RecentReviews';
 import About from './components/About'
 import ExistingSubmitForm from './components/ExistingSubmitForm'
 import ProfSearched from './components/ProfSearched'
+import APISection from './components/APISection'
 // import ChordEditor from './components/ChordEditor';
 // import SongList from './components/SongList';
 import { app, base } from './base';
@@ -108,8 +109,8 @@ class App extends Component {
                 )} />
                 <Route exact path="/" render={() => (
                   <SubmitReview authenticated={this.state.authenticated} />
-                )}
-                />
+                )}/>
+                <Route exact path="/" component={APISection}/>
                 <Route exact path="/ExistingSubmitForm" render={() => (
                   <ExistingSubmitForm />
                 )} />

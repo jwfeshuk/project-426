@@ -34,60 +34,82 @@
 import React, { Component } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import { app } from '../base';
 
 class SearchProfs extends Component {
 
     constructor() {
         super()
         this.state = {
-            options: [
-                { title: 'The Shawshank Redemption', year: 1994 },
-                { title: 'The Godfather', year: 1972 },
-            ]
+            options: [],
+            value: "",
+            inputValue: ""
         }
 
-        this.handleSubmit = this.handleSubmit.bind(this)
+        // this.handleSubmit = this.handleSubmit.bind(this);
+        // this.handleChange = this.handleChange.bind(this);
 
     }
 
-    handleSubmit(target) {
-        console.log(target.target.value)
-        alert('THIS');
-        console.log('THIS')
-        setTimeout(3000)
+    componentDidMount() {
+        let logDB = async function (db) {
+            app.firestore().collection("/professors").get()
+                .then((profs) => {
+                    let temp = [];
+                    profs.forEach((prof) => {
+                        let professor = prof.data()
+                        temp.push({
+                            title: professor.first + " " + professor.last,
+                            id: professor.profID,
+                        })
+                    })
+                    db.setState({ options: temp })
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
+        }
+        logDB(this);
     }
 
-    handleChange(target) {
-        console.log(target.target.value)
-    }
+    // handleSubmit(target) {
+    //     console.log(target.target.value)
+    //     alert('THIS');
+    //     console.log('THIS')
+    //     setTimeout(3000)
+    // }
+
+    // handleChange(target) {
+    //     this.setState({ value: target.target.value })
+    //     console.log(target.target.value)
+    //     console.log(this.state.value)
+    // }
 
     render() {
         return (
             <Autocomplete
+
+                value={this.state.value}
+                onChange={(event, newValue) => {
+                    this.setState({value: newValue});
+                }}
+                // inputValue={inputValue}
+                // onInputChange={(event, newInputValue) => {
+                //     setInputValue(newInputValue);
+                // }}
+
                 id="combo-box-demo"
                 className="form-control"
-                freeSolo
                 options={this.state.options}
                 getOptionLabel={(option) => option.title}
                 style={{ width: "100%", backgroundColor: "#FFF", color: "#FFF", height: "55px", padding: "6px" }}
-                renderInput={(params) => <TextField {...params} label="Search for a Professor..." variant="outlined" onChange={() => this.handleChange} onSubmit={() => this.handleSubmit} />}
+                renderInput={(params) => <TextField {...params} value={this.state.value} label="Search for a Professor..." variant="outlined" />}
+                // renderInput={(params) => <TextField {...params} value={this.state.value} label="Search for a Professor..." variant="outlined" onChange={() => this.handleChange} />}
                 size="small"
-                
-                onChange = {(event, value) => console.log(value)}
 
-                onSubmit = { (e) => {
-                    e.preventDefault();
-                    alert('HERE')
-                    // setTimeout(3000)
-                    
-                }}
+                onKeyDown
 
 
-
-            // onSubmit = {
-            //     e.preventDefault();
-            //     console.log('SUBMIT')
-            // }
             />
         )
     }

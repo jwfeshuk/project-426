@@ -38,10 +38,10 @@ class ProfSearched extends Component {
             (!this.state.render)
             ?<Spinner animation="border" role="status" />
             :<Card>
-                <Card.Header className="text-center" style={{backgroundColor: "#13294B", color: "#ffffff", fontSize: "28px"}}>{this.props.prof.first} {this.props.prof.last}'s Reviews</Card.Header>
+                <Card.Header className="text-center" style={{backgroundColor: "#13294B", color: "#ffffff", fontSize: "28px"}}>{this.state.prof.first} {this.state.prof.last}'s Reviews</Card.Header>
                 <ListGroup variant="flush">
                     {this.state.reviews.map((review) => {
-                        return (<ListGroup.Item style={{backgroundColor: "#97c0e6"}}>
+                        return (<ListGroup.Item key={review.reviewID} style={{backgroundColor: "#97c0e6"}}>
                                     <ReviewCard review={review}></ReviewCard>
                                 </ListGroup.Item>)
                     })}

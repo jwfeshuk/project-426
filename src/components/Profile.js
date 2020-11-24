@@ -29,7 +29,7 @@ class Profile extends Component {
             (!this.props.authenticated)
             ?<Redirect to='/' />
             :<Card>
-                <Card.Title>My Profile</Card.Title>
+                <Card.Title style={{textAlign: "center"}}>My Profile</Card.Title>
                 <Card.Body>
                     {/* <strong>Email: </strong>{UserEmail} */}
                     <Button onClick={this.editProf}>Edit Profile Information</Button>

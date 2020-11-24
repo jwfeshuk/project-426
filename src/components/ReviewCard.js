@@ -38,7 +38,7 @@ class ReviewCard extends Component {
             :<Card style={{backgroundColor: "#13294B"}}>
                 <Card.Title style={{color: "#fff", fontSize: "24px", margin: "20px 20px", display: "flex", justifyContent: "space-between"}}>
                     <div>Professor: {this.state.prof.first} {this.state.prof.last}</div>
-                    <div style={{textAling: "left", fontSize: "24px"}}>Course: {this.props.review.courseCode}</div>
+                    <div style={{textAlign: "left", fontSize: "24px"}}>Course: {this.props.review.courseCode}</div>
                     <div style={{fontSize: "24px"}}>{this.props.review.lastUpdatedPretty}</div>
                 </Card.Title>
                 <Card.Body>
@@ -66,13 +66,13 @@ class ReviewCard extends Component {
                             </Figure>
                         </div>
                         <div className="contentContainer" style={{display: "flex", flexFlow: "column wrap", justifyContent: "space-between", alignContent: "space-around", flexWrap: "", color: "#fff", marginLeft: "-400px", height: "246px"}}>
-                            <div className="conds" style={{display: "flex", justifyContent: "space-between"}}>
+                            <div className="conds" style={{display: "flex", justifyContent: "space-between", fontSize: "16px"}}>
                                 <p>Would Take Again: <strong>{this.props.review.takeAgain}</strong></p>
                                 <p>Textbook Required: <strong>{this.props.review.useTextbook}</strong></p>
                                 <p>Attendance Required: <strong>{this.props.review.attendance}</strong></p>
                                 <p>Grade Received: <strong>{this.props.review.grade}</strong></p>
                             </div>
-                            <div className="specifics" style={{display: "flex", justifyContent: "space-between"}}>{this.props.review.specifics}</div>
+                            <div className="specifics" style={{display: "flex", justifyContent: "space-between", fontSize: "18px"}}>{this.props.review.specifics}</div>
                             <div className="tags" style={{display: "flex", justifyContent: "space-between"}}>
                                 {this.state.tags.map((tag) => <Button variant="secondary" style={{color: "#fff !important"}} disabled>{tag}</Button>)}
                             </div>

@@ -26,7 +26,7 @@ class SubmitReview extends Component {
         return (
             <Card className="text-center" style={{backgroundColor: "#97c0e6", marginBottom: "8px"}}>
                 <Card.Body>
-                    <Card.Title style={{fontSize: '40px', color: "#ffffff"}}>Find the Best (Or Worst) Professors On Campus</Card.Title>
+                    <Card.Title style={{fontSize: '40px', color: "#ffffff"}}>Find the Best (Or Worst) CS Professors On Campus</Card.Title>
                     <Card.Subtitle style={{fontSize: '25px', color: "#ffffff"}}>Or Give Your Own Opinion</Card.Subtitle>
                     <Card.Text></Card.Text>
                        {this.props.authenticated

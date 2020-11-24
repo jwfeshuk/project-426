@@ -16,14 +16,18 @@ class MyReviews extends Component {
     }
 
     componentDidMount() {
-        app.firestore().collection("/users").doc(app.auth().currentUser.uid).get()
+        let userDB = app.firestore().collection("/users").doc(app.auth().currentUser.uid)
+        
+        userDB.get()
             .then((user) => user.data())
             .then((data) => this.setState({user: data}))
             .catch((error) => {
                 console.log(error);
             })
 
-        app.firestore().collection("/users").doc(this.state.user.uid).get()
+        userDB = app.firestore().collection("/users").doc(app.auth().currentUser.uid)
+
+        userDB.get()
             .then((user) => user.data())
             .then((data) => this.setState({reviews: data.reviews, render: true}))
             .catch((error) => {
@@ -39,11 +43,14 @@ class MyReviews extends Component {
                     {console.log(this.state)}
                     {(!this.state.render)
                         ? <Spinner animation="border" role="status" />
-                        : this.state.reviews.map((review) => {
-                            return (<ListGroup.Item style={{ backgroundColor: "#97c0e6" }}>
-                                <ReviewCard review={review}></ReviewCard>
-                            </ListGroup.Item>)
-                        })}
+                        : (typeof this.state.reviews != "undefined")
+                            ? this.state.reviews.map((review) => {
+                                return (<ListGroup.Item style={{ backgroundColor: "#97c0e6" }}>
+                                    <ReviewCard review={review}></ReviewCard>
+                                </ListGroup.Item>)
+                              })
+                            : (<ListGroup.Item style={{ backgroundColor: "#97c0e6" }}>You have no reviews.</ListGroup.Item>)
+                    }
                 </ListGroup>
             </Card>
         )

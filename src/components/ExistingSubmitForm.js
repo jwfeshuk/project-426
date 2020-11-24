@@ -59,36 +59,36 @@ class ExistingSubmitForm extends Component {
             let today = new Date()
             review.lastUpdated = today.getTime()
             review.lastUpdatedPretty = (today.getMonth() + 1) + '/' + today.getDate() + '/' + today.getFullYear()
+            review.userID = app.auth().currentUser.uid;
 
-            let reviewDB = reviewCol.add(review).then((reviewRef) => {
+            reviewCol.add(review)
+            .then((reviewRef) => {
                 review.reviewID = reviewRef.id
 
                 reviewCol.doc(reviewRef.id).update({
-                    reviewID: reviewRef.id
-                })
-                
-                let currentUser = app.auth().currentUser
-
-                let userCol = app.firestore().collection("/users")
-
-                userCol.doc(currentUser.uid).get().then((user) =>  {
-                    let userData = user.data()
-                    console.log(userData)
-                    if (typeof userData.reviews != 'undefined' && userData.reviews != null && userData.length > 0) {
-                        userCol.doc(currentUser.uid).update({reviews: [reviewRef.id]})
-                    } else {
-                        userData.reviews.push(reviewRef.id);
-                        userCol.doc(currentUser.uid).update({reviews: userData.reviews})
-                    }
-                    console.log(userData)
+                    reviewID: reviewRef.id,
+                    userID: app.auth().currentUser.uid
                 })
 
-
-                window.location.href = "/"
             }).catch((error) => {
                 console.log(error);
             })
 
+            let userCol = app.firebase().collection("/users")
+
+            userCol.doc(review.userID).get()
+                .then((user) => user.data())
+                .then((data) => {
+                    if (typeof data.reviews != 'undefined' && data.reviews != null && data.length > 0) {
+                        userCol.doc(review.userID).update({reviews: [review.reviewID]})
+                    } else {
+                        data.reviews.push(review.reviewID);
+                        userCol.doc(review.userID).update({reviews: data.reviews})
+                    }
+                window.location.href = "/"
+            }).catch((error) => {
+                console.log(error);
+            })
         } else {
             alert("You didn't finish the form! Please go back and finish.")
         }
