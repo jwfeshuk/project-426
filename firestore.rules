@@ -1,37 +1,8 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /professors/{professorID} {
-      allow create: if request.auth != null 
-      	               && (request.auth.token.email.matches(".*@*.unc.edu$") 
-        	  						   || request.auth.token.email.matches(".*@unc.edu$"));
-                                
-      allow read, update, delete: if request.auth != null 
-      												       && request.resource.data.userID == request.auth.uid
-      	                    	       && (request.auth.token.email.matches(".*@*.unc.edu$") 
-        	  						        	       || request.auth.token.email.matches(".*@unc.edu$"));
-    }
-    
-    match /reviews/{reviewID} {
-      allow create: if request.auth != null 
-      	               && (request.auth.token.email.matches(".*@*.unc.edu$") 
-        	  						   || request.auth.token.email.matches(".*@unc.edu$"));
-                                
-      allow read, update, delete: if request.auth != null 
-      												       && request.resource.data.userID == request.auth.uid
-      	                    	       && (request.auth.token.email.matches(".*@*.unc.edu$") 
-        	  						        	       || request.auth.token.email.matches(".*@unc.edu$"));
-    }
-    
-    match /users/{userId} {
-      allow create: if request.auth != null
-      								 && (request.auth.token.email.matches(".*@*.unc.edu$") 
-        	             	   || request.auth.token.email.matches(".*@unc.edu$"));
-      
-      allow read, update, delete: if request.auth != null 
-      						 									 && request.auth.uid == userID
-      	           									 && (request.auth.token.email.matches(".*@*.unc.edu$") 
-        	             									 || request.auth.token.email.matches(".*@unc.edu$"));
-    }
+      match /{document=**} {
+      	allow read, write: if request.auth != null
+      }
   }
 }
