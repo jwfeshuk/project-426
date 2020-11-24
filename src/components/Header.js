@@ -39,7 +39,7 @@ class Header extends Component {
         //     return <Redirect to='/professors/' />
         // }
 
-        this.setState({redirectedPath: "/professor/" + this.state.selectedOption.value});
+        this.setState({ redirectedPath: "/professor/" + this.state.selectedOption.value });
 
     }
 
@@ -53,10 +53,23 @@ class Header extends Component {
         console.log(this.state.redirectedPath)
 
         if (this.state.redirectedPath) {
+            // return (<Redirect push to={{
+            //     pathname: this.state.redirectedPath
+            //     // pathname: '/'
+            //     // state: { results: this.state.results }
+            // }} />);
+
+            // return (<Redirect to={{
+            //     pathname: this.state.redirectedPath
+            //     // pathname: '/'
+            //     // state: { results: this.state.results }
+            // }} />);
+
+            setTimeout(function () { window.location.reload() }, .001);
             return (<Redirect to={{
                 pathname: this.state.redirectedPath
-                // state: { results: this.state.results }
             }} />);
+
         }
 
         const searches = this.state.searches || []
@@ -75,11 +88,10 @@ class Header extends Component {
                                     <AutoCompleteProf style={{ width: "90%" }} onChange={this.handleChange} />
                                 </Form>
                             </>
-
                             :
                             <Form inline style={{ width: "90%" }}>
                                 <FormControl style={{ width: "100%" }} variant="outline-light" type="text" placeholder="Login to Search Professors..." className="mr-sm-2" readOnly />
-                                 {/* <Button variant="outline-light">Search</Button> */}
+                                {/* <Button variant="outline-light">Search</Button> */}
                             </Form>
                         }
                     </Nav>

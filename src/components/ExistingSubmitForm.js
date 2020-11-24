@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Card, Button, Form, Col } from 'react-bootstrap';
 import { app } from '../base';
 import SearchProfs from "./SearchProfs"
+import AutoCompleteProf from "./AutoCompleteProf"
 
 class ExistingSubmitForm extends Component {
     constructor(props) {
@@ -21,6 +22,7 @@ class ExistingSubmitForm extends Component {
         }
 
         this.onSubmit = this.onSubmit.bind(this);
+        this.onChange = this.onChange.bind(this);
     }
 
     createSelectItems() {
@@ -75,24 +77,27 @@ class ExistingSubmitForm extends Component {
                 console.log(error);
             })
 
-            let userCol = app.firebase().collection("/users")
+            let userCol = app.firestore().collection("/users")
 
             userCol.doc(review.userID).get()
                 .then((user) => user.data())
                 .then((data) => {
-                    if (typeof data.reviews != 'undefined' && data.reviews != null && data.length > 0) {
-                        userCol.doc(review.userID).update({reviews: [review.reviewID]})
-                    } else {
-                        data.reviews.push(review.reviewID);
-                        userCol.doc(review.userID).update({reviews: data.reviews})
-                    }
+                    data.reviews.push(review.reviewID);
+                    userCol.doc(review.userID).update({reviews: data.reviews})
+                }).catch((error) => {
+                    console.log(error);
+                })
+                
                 window.location.href = "/"
-            }).catch((error) => {
-                console.log(error);
-            })
         } else {
             alert("You didn't finish the form! Please go back and finish.")
         }
+    }
+
+    onChange = prof => {
+        this.setState({profID: prof.value})
+        console.log(prof)
+        console.log(this.state)
     }
 
     render() {
@@ -104,8 +109,8 @@ class ExistingSubmitForm extends Component {
                         <Form.Row>
                             <Form.Group as={Col} controlId="formProfFirst">
                                 <Form.Label>Professor</Form.Label>
-                                <SearchProfs onInputChange={(e, v) => this.setState({ profID: v })} onChange={e => this.setState({ profID: e.target.value })}/>
-                            </Form.Group>
+                                <AutoCompleteProf onChange={this.onChange}/>
+                                </Form.Group>
                             <Form.Group as={Col} controlId="formCourseCode">
                                 <Form.Label>Course Code</Form.Label>
                                 <Form.Control style={{ height: "53px" }} type="name" placeholder="e.g. COMP 426" onChange={e => this.setState({ courseCode: e.target.value })} />

@@ -46,9 +46,6 @@ class Register extends Component {
         .catch((error) => {
             console.log(error.code);
             console.log(error.message);
-
-            
-
         })
 
 

@@ -45,9 +45,6 @@ class SubmitNewProf extends Component {
                                 <Form.Control type="name" placeholder="e.g. Meyer-Patel" onChange={e => this.setState({ last: e.target.value })} />
                             </Form.Group>
                         </Form.Row>
-                        
-                        <Form.Label>Here's your chance to be more specific</Form.Label>
-                        <Form.Control style={{marginBottom: "8px"}} as="textarea" onChange={e => this.setState({ specifics: e.target.value })} />
                         <Button style={{marginRight: "5px", backgroundColor: "#13294B", borderColor: "#13294B"}} onClick={this.onSubmit} type="submit">Submit</Button>
                         <Button style={{backgroundColor: "#13294B", borderColor: "#13294B"}} href="/">Cancel</Button>
                     </Form>

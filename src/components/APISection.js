@@ -48,10 +48,10 @@ class APISection extends Component {
     }
 
     testMan() {
-        let distance = this.getDistanceFromLatLonInKm(this.state.latlon[1], this.state.latlon[0], 35.9132, -79.0558)
-        if (distance < 10000) {
+        let distance = this.getDistanceFromLatLonInKm(this.state.latlon[0], this.state.latlon[1], 35.9132, -79.0558)
+        if (distance < 50) {
             this.setState({close: true})
-        } else if (distance < 20000) {
+        } else if (distance < 200) {
             this.setState({middle: true})
         } else if (this.state.latlon){
             this.setState({far: true})

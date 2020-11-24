@@ -25,12 +25,12 @@ class MyReviews extends Component {
                 console.log(error);
             })
 
-        userDB = app.firestore().collection("/users").doc(app.auth().currentUser.uid)
-
-        userDB.get()
-            .then((user) => user.data())
-            .then((data) => this.setState({reviews: data.reviews, render: true}))
-            .catch((error) => {
+        userDB = app.firestore().collection("/reviews").where("userID", "==", app.auth().currentUser.uid).get()
+            .then((reviews) => {
+                let temp = []
+                reviews.forEach((review) => temp.push(review.data()))
+                this.setState({reviews: temp, render: true})
+            }).catch((error) => {
                 console.log(error);
             })
     }

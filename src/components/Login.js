@@ -68,6 +68,7 @@ class Login extends Component {
                         Password
                         <input style={{ width: "100%" }} className="pt-input" name="password" type="password" ref={(input) => { this.passwordInput = input }} placeholder="Password"></input>
                     </label>
+
                     <input style={{ width: "100%" }} type="submit" className="pt-button pt-intent-primary" value="Log In"></input>
                 </form>
             </div>

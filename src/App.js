@@ -98,12 +98,10 @@ class App extends Component {
       <div style={{ maxWidth: "1160px", margin: "0 auto" }}>
         <BrowserRouter>
           <div>
-          {/* <Header authenticated={this.state.authenticated} /> */}
+          <Header authenticated={this.state.authenticated} />
             <div id="main-content" style={{ padding: "1em" }}>
               <div className="workspace">
 
-                
-                <Header authenticated={this.state.authenticated} />
 
                 {/* <Route exact path='' component={Header} /> */}
 
@@ -129,7 +127,7 @@ class App extends Component {
                 <Route exact path="/" render={() => (
                   <RecentReviews recents={this.state.recents} />
                 )} />
-                <Route exact path="/professor/:id" component={ProfSearched} />
+                <Route path="/professor/:id" component={ProfSearched} />
                 {/*<Container>
                   <Row>
                     <Col><Route exact path="/" component={RecentReviews} /></Col>
