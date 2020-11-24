@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Card, Button } from 'react-bootstrap';
 import { app } from '../base';
@@ -31,7 +31,7 @@ class SubmitReview extends Component {
                     <Card.Text></Card.Text>
                        {this.props.authenticated
                             ?<Button variant="secondary" style={{backgroundColor: "#13294B"}} href="/ExistingSubmitForm">Write A Review!</Button>
-                            :<Button variant="secondary" style={{backgroundColor: "#13294B"}} href="/Login">Login to Post Reviews</Button>
+                            :<Button variant="secondary" style={{backgroundColor: "#13294B"}} href="/Login">Login or Signup to See/Post Reviews</Button>
                         }
                 </Card.Body>
             </Card>
