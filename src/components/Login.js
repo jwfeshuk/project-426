@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
-// import { Toaster, Intent } from '@blueprintjs/core';
 import { app } from '../base';
 
 const loginStyles = {
@@ -27,6 +26,23 @@ class Login extends Component {
         const email = this.emailInput.value
         const password = this.passwordInput.value
 
+        if (email == "" && password == "") {
+            alert('Please enter your email and password.')
+            return;
+        }
+        if (email == "") {
+            alert('Please enter your email.')
+            return;
+        }
+        if (!/unc.edu/.test(email)) {
+            alert('Please use a valid UNC email using ".unc.edu"');
+            return;
+        }
+        if (password == "") {
+            alert('Please enter your password.')
+            return;
+        }
+
         app.auth().signInWithEmailAndPassword(email, password)
             .then((user) => {
                 //signed in
@@ -34,24 +50,19 @@ class Login extends Component {
             })
             .then((user) => {
                 if (user && user.user.email) {
-                    this.loginForm.reset()
-                    window.location.href = "/"
+                    this.loginForm.reset();
+                    window.location.href = "/";
                 }
             })
             .catch((error) => {
-                console.log(error.code);
-                console.log(error.message);
+                this.loginForm.reset();
+                alert(error.code + "\n" + error.message);
             })
     }
 
     render() {
-
         return (
-
             <div style={loginStyles}>
-                {/* <Toaster ref={(element) => { this.toaster = element }} /> */}
-                {/* <button style={{width: "100%"}} className="pt-button pt-intent-primary" onClick={() => { this.authWithFacebook() }}>Log In with Facebook</button> */}
-                {/* <hr style={{marginTop: "10px", marginBottom: "10px"}}/> */}
                 <form onSubmit={(event) => { this.authWithEmailPassword(event) }} ref={(form) => { this.loginForm = form }}>
                     <div style={{ marginBottom: "10px" }} className="pt-callout pt-icon-info-sign">
                         <h5>Login</h5>
@@ -65,7 +76,6 @@ class Login extends Component {
                         Password
                         <input style={{ width: "100%" }} className="pt-input" name="password" type="password" ref={(input) => { this.passwordInput = input }} placeholder="Password"></input>
                     </label>
-
                     <input style={{ width: "100%" }} type="submit" className="pt-button pt-intent-primary" value="Log In"></input>
                 </form>
             </div>

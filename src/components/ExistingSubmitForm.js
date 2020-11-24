@@ -28,8 +28,8 @@ class ExistingSubmitForm extends Component {
     onSubmit(e) {
         e.preventDefault();
         
-        if (!!this.state.profID && !!this.state.courseCode && this.state.rating != 0 && this.state.difficulty != 0
-            && !!this.state.takeAgain && !!this.state.useTextbook && !!this.state.specifics) {
+        if (typeof this.state.profID != "undefined" && typeof this.state.courseCode != "undefined" && this.state.rating != 0 && this.state.difficulty != 0
+            && typeof this.state.takeAgain != "undefined" && typeof this.state.useTextbook != "undefined" && typeof this.state.specifics!= "undefined") {
             let review = {
                 profID: this.state.profID,
                 courseCode: this.state.courseCode,
@@ -40,7 +40,7 @@ class ExistingSubmitForm extends Component {
                 specifics: this.state.specifics
             }
 
-            if (!!this.state.attendance) {
+            if (typeof this.state.attendance != "undefined") {
                 review.attendance = this.state.attendance
             }
 
@@ -63,7 +63,12 @@ class ExistingSubmitForm extends Component {
             
             newReviewRef.set(review)
 
-            window.location.href = "/"
+            // alert(newReviewRef);
+
+            // console.log(newReviewRef)
+            // console.log(review)
+
+            // window.location.href = "/"
         } else {
             alert("You didn't finish the form! Please go back and finish.")
         }

@@ -65,10 +65,12 @@ class Header extends Component {
             //     // state: { results: this.state.results }
             // }} />);
 
-            setTimeout(function () { window.location.reload() }, .001);
-            return (<Redirect to={{
-                pathname: this.state.redirectedPath
-            }} />);
+            window.location.href = this.state.redirectedPath;
+
+            // setTimeout(function () { window.location.reload() }, .001);
+            // return (<Redirect to={{
+            //     pathname: this.state.redirectedPath
+            // }} />);
 
         }
 

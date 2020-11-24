@@ -44,7 +44,7 @@ class ProfSearched extends Component {
             (!this.state.render)
             ?<Spinner animation="border" role="status" />
             :(this.state.isClicked)
-                ?<ExistingSubmitForm prof={this.state.prof.first + " " + this.state.prof.last}/>
+                ?<ExistingSubmitForm prof={this.state.prof}/>
                 :<Card>
                     <Card.Header className="text-center" style={{backgroundColor: "#13294B", color: "#ffffff", fontSize: "28px"}}>
                         <span style={{marginLeft: "200px"}}>{this.state.prof.first} {this.state.prof.last}'s Reviews</span>
