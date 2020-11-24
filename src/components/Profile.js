@@ -58,7 +58,7 @@ class Profile extends Component {
             (!this.props.authenticated)
             ?<Redirect to='/' />
             :<div><Card>
-                <Card.Title style={{textAlign: "center", fontSize: "36px", marginTop: "15px"}}>Your Profile<br/><span style={{fontSize: "20px"}}>({this.state.user.email})</span></Card.Title>
+                <Card.Title style={{textAlign: "center", fontSize: "36px", marginTop: "15px"}}>Your Profile<br/><span style={{fontSize: "20px"}}>({app.auth().currentUser.email})</span></Card.Title>
                 <Card.Body style={{textAlign: "center"}}>
                     {(this.state.isClicked)
                         ?<Form style={{width: "50%", marginLeft: "25%"}}>

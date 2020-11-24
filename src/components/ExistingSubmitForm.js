@@ -68,7 +68,7 @@ class ExistingSubmitForm extends Component {
             // console.log(newReviewRef)
             // console.log(review)
 
-            // window.location.href = "/"
+            window.location.href = "/"
         } else {
             alert("You didn't finish the form! Please go back and finish.")
         }

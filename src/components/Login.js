@@ -28,19 +28,12 @@ class Login extends Component {
 
         if (email == "" && password == "") {
             alert('Please enter your email and password.')
-            return;
-        }
-        if (email == "") {
+        } else if (email == "") {
             alert('Please enter your email.')
-            return;
-        }
-        if (!/unc.edu/.test(email)) {
+        } else if (!/unc.edu/.test(email)) {
             alert('Please use a valid UNC email using ".unc.edu"');
-            return;
-        }
-        if (password == "") {
+        } else if (password == "") {
             alert('Please enter your password.')
-            return;
         }
 
         app.auth().signInWithEmailAndPassword(email, password)
@@ -51,7 +44,7 @@ class Login extends Component {
             .then((user) => {
                 if (user && user.user.email) {
                     this.loginForm.reset();
-                    window.location.href = "/";
+                    this.setState({ redirect: true })
                 }
             })
             .catch((error) => {
@@ -61,6 +54,9 @@ class Login extends Component {
     }
 
     render() {
+        if (this.state.redirect === true) {
+            return <Redirect to='/' />
+        }
         return (
             <div style={loginStyles}>
                 <form onSubmit={(event) => { this.authWithEmailPassword(event) }} ref={(form) => { this.loginForm = form }}>

@@ -26,23 +26,6 @@ class Register extends Component {
     const email = this.emailInput.value
     const password = this.passwordInput.value
 
-    if (email == "" && password == "") {
-      alert('Please enter your email and password.')
-      return;
-    }
-    if (email == "") {
-      alert('Please enter your email.')
-      return;
-    }
-    if (!/unc.edu/.test(email)) {
-      alert('Please use a valid UNC email using ".unc.edu"');
-      return;
-    }
-    if (password == "") {
-      alert('Please enter your password.')
-      return;
-    }
-
     app.auth().createUserWithEmailAndPassword(email, password)
       .then((user) => {
         //registered
@@ -56,16 +39,59 @@ class Register extends Component {
             uid: user.user.uid
           })
           this.registerForm.reset()
-          window.location.href = "/"
+          this.setState({ redirect: true })
         }
       })
       .catch((error) => {
-        this.registerForm.reset();
-        alert(error.code + "\n" + error.message);
+        console.log(error.code);
+        console.log(error.message);
       })
   }
 
+  // authWithEmailPassword(event) {
+  //   event.preventDefault()
+
+  //   const email = this.emailInput.value
+  //   const password = this.passwordInput.value
+
+  //   if (email == "" && password == "") {
+  //     alert('Please enter your email and password.')
+  //   } else if (email == "") {
+  //     alert('Please enter your email.')
+  //   } else if (!/unc.edu/.test(email)) {
+  //     alert('Please use a valid UNC email using ".unc.edu"');
+  //   } else if (password == "") {
+  //     alert('Please enter your password.')
+  //   }
+
+  //   app.auth().createUserWithEmailAndPassword(email, password)
+  //     .then((user) => {
+  //       return user;
+  //     }).then((user) => {
+
+  //       if (user && user.user.email) {
+  //         app.firestore().collection("/users").doc(user.user.uid).set({
+  //           email: user.user.email,
+  //           password: password,
+  //           uid: user.user.uid
+  //         })
+  //         this.registerForm.reset()
+  //         this.setState({ redirect: true })
+  //         // console.log('here2');window.location.href = "/"
+  //       }
+
+  //     })
+  //     .catch((error) => {
+  //       this.registerForm.reset();
+  //       alert(error.code + "\n" + error.message);
+  //     })
+
+  // }
+
   render() {
+    if (this.state.redirect === true) {
+      return <Redirect to='/' />
+    }
     return (
       <div style={registerStyles}>
         <form onSubmit={(event) => { this.authWithEmailPassword(event) }} ref={(form) => { this.registerForm = form }}>
