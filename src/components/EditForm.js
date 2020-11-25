@@ -83,7 +83,7 @@ class EditForm extends Component {
                     reviewCol.doc(this.props.review.reviewID).update({tags: this.state.tags})
                 }
             }).then(() => {
-                window.location.reload()
+                window.location.href = window.location
             })
         } else {
             alert("Something went wrong! Make sure the form is filled out!")
@@ -91,7 +91,7 @@ class EditForm extends Component {
     }
 
     cancel() {
-        window.location.reload()
+        window.location.href = window.location
     }
 
     render() {

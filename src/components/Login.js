@@ -34,28 +34,29 @@ class Login extends Component {
             alert('Please use a valid UNC email using ".unc.edu"');
         } else if (password == "") {
             alert('Please enter your password.')
-        }
-
-        app.auth().signInWithEmailAndPassword(email, password)
-            .then((user) => {
-                //signed in
-                return user;
-            })
-            .then((user) => {
-                if (user && user.user.email) {
+        } else {
+            app.auth().signInWithEmailAndPassword(email, password)
+                .then((user) => {
+                    //signed in
+                    return user;
+                })
+                .then((user) => {
+                    if (user && user.user.email) {
+                        this.loginForm.reset();
+                        this.setState({ redirect: true })
+                    }
+                })
+                .catch((error) => {
                     this.loginForm.reset();
-                    this.setState({ redirect: true })
-                }
-            })
-            .catch((error) => {
-                this.loginForm.reset();
-                alert(error.code + "\n" + error.message);
-            })
+                    alert(error.code + "\n" + error.message);
+                })
+        }
     }
 
     render() {
         if (this.state.redirect === true) {
-            return <Redirect to='/' />
+            window.location.href = '/'
+            // return <Redirect to='/' />
         }
         return (
             <div style={loginStyles}>
